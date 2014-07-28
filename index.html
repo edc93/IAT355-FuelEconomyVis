@@ -71,8 +71,8 @@ var dataset = [];
 d3.csv("FuelEconomyDataset.csv", 
 		function(row){
 			return{
-				"Division": row.Division,
-				"Carline": row.Carline,
+				"Make": row.Make,
+				"Model": row.Model,
 				"Cyl": row.Cyl,
 				"Comb": +row.Comb,
 			}
