@@ -107,30 +107,6 @@ function mapped(){
 var nodes = draw();
 
 function draw(){
-	d3.csv("FuelEconomyDataset.csv", 
-		function(row){
-			return{
-				"Make": row.Make,
-				"Model": row.Model,
-				"Cylinder": +row.Cylinder,
-				"Transmission": row.Transmission,
-				"Drive": row.Drive,
-				"Fuel": row.Fuel,
-				"Cost": +row.Cost,
-				"CityMPG": +row.CityMPG,
-				"HighwayMPG": +row.HighwayMPG,
-				"CombinedMPG": +row.CombinedMPG,
-				"CityCO2": +row.CityCO2,
-				"HighwayCO2": +row.HighwayCO2,
-				"CombinedCO2": +row.CombinedCO2
-			}
-		},
-		function(error, data){
-			dataset = data
-			n = dataset.length;
-			console.log(n);
-		}
-	)
 	console.log(n);
 	return d3.range(n).map(mapped);
 }
