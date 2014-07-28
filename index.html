@@ -59,7 +59,7 @@ var width = 960,
     maxRadius = 12;
 
 var n = 200, // total number of nodes
-    m = 10; // number of distinct clusters
+    m = 12; // number of distinct clusters
 
 var color = d3.scale.category10().domain(d3.range(m));
 
@@ -88,19 +88,53 @@ d3.csv("FuelEconomyDataset.csv",
 		},
 		function(error, data){
 			dataset = data
-			console.log(dataset);
+			n = dataset.length;
+			//console.log(n);
 		}
 )
 
-var nodes = d3.range(n).map(function() {
-  var i = Math.floor(Math.random() * m),
-  r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
-  d = {cluster: i, radius: r};
-  if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
-  
-  return d;
-  
-});
+
+function mapped(){
+	var i = Math.floor(Math.random() * m) //Cluster
+	var r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius //Value, size of circle
+	var d = {cluster: i, radius: r};
+	//console.log(d);
+	if (!clusters[i] || (r > clusters[i].radius)) 
+		clusters[i] = d;  
+	return d;
+}
+
+var nodes = draw();
+
+function draw(){
+	d3.csv("FuelEconomyDataset.csv", 
+		function(row){
+			return{
+				"Make": row.Make,
+				"Model": row.Model,
+				"Cylinder": +row.Cylinder,
+				"Transmission": row.Transmission,
+				"Drive": row.Drive,
+				"Fuel": row.Fuel,
+				"Cost": +row.Cost,
+				"CityMPG": +row.CityMPG,
+				"HighwayMPG": +row.HighwayMPG,
+				"CombinedMPG": +row.CombinedMPG,
+				"CityCO2": +row.CityCO2,
+				"HighwayCO2": +row.HighwayCO2,
+				"CombinedCO2": +row.CombinedCO2
+			}
+		},
+		function(error, data){
+			dataset = data
+			n = dataset.length;
+			console.log(n);
+		}
+	)
+	console.log(n);
+	return d3.range(n).map(mapped);
+}
+
 
 // Use the pack layout to initialize node positions.
 d3.layout.pack()
