@@ -74,9 +74,15 @@ d3.csv("FuelEconomyDataset.csv",
 				"Make": row.Make,
 				"Model": row.Model,
 				"Cylinder": +row.Cylinder,
+				"Transmission": row.Transmission,
+				"Fuel": row.Fuel,
+				"Cost": +row.Cost,
 				"City": +row.City,
 				"Highway": +row.Highway,
-				"Combined": +row.Combined
+				"Combined": +row.Combined,
+				"CityCO2": +row.CityCO2,
+				"HighwayCO2": +row.HighwayCO2,
+				"CombinedCO2": +row.CombinedCO2
 			}
 		},
 		function(error, data){
