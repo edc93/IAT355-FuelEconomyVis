@@ -82,6 +82,10 @@ function mapped(){
 	} 
 	return d;
 }
+functino make(){
+	var counted = [];
+	
+}
 
 d3.csv("FuelEconomyDataset.csv", 
 		function(row){
@@ -104,6 +108,7 @@ d3.csv("FuelEconomyDataset.csv",
 		function(error, data){
 			dataset = data
 			n = dataset.length
+			m = make(); // This is yours
 			nodes = d3.range(n).map(mapped) //This
 			visualize()
 			console.log(nodes)
