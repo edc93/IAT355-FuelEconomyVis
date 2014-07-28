@@ -1,0 +1,462 @@
+<html>
+<head></head>
+<body>
+	<div id="tooltip"></div>
+	<div id="pieChart"></div>
+	<div id="viz-control-container">
+		<div id="svg-div">
+		</div>
+
+		<div id="controls">
+			<form>				
+				<div>
+					<label>Phone Number</label>
+					<input name="searchTxt" type="text" maxlength="3" id="searchTxt" value = 200 class="searchField"/>
+				</div>
+				<div>
+					<label>Minimum Calls</label>
+					<input name="min" type="text" maxlength="3" id="min" value = 0 class="searchField"/>
+				<div>
+					<label>Maximum Calls</label>
+					<input name="max" type="text" maxlength="3" id="max" value = 50 class="searchField"/>	
+					<input name="updateButton" type="button" value="Search" onclick="drawUpdate()" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+<script src="d3pie.min.js"></script>
+<script>
+	/*Test Set
+	var dataset1;
+		d3.csv("lab04_1.csv", function(row){
+		return {
+			"label": +row.x,
+			"value": +row.y,
+			"color": +row.size
+		}},
+
+		function(error, data){
+			dataset1 = data
+		}
+	)
+	End Test Data*/
+	
+	
+	//Set the array of dataset to objects including from, to, datatime, duration, celltower
+	var dataset = [];	
+	var myPie;
+	var phone = document.getElementById("searchTxt").value;
+	
+	d3.csv("CellPhoneCallRecords.csv", 
+		function(row){
+			return{
+				"From": +row.From,
+				"To": +row.To,
+				"Datetime": row.Datetime,
+				"Duration": +row.Duration,
+				"Celltower": +row.Celltower
+			}
+		},
+		function(error, data){
+			dataset = data
+		}
+	)
+	
+	//Filters the dataset so only calls from or to the chosen phone is left
+	function filter4phone(set, number){
+		var filtered = [];
+		for(var i = 0; i < set.length; i++) {
+			if(set[i].From == number) {
+				filtered.push({
+					"To": set[i].To,
+					"Date": set[i].Datetime.split(' ', 2)[0],
+					"Time": +set[i].Datetime.split(' ', 2)[1],
+					"Duration": set[i].Duration,
+					"Celltower": set[i].Celltower
+				});
+			}
+			if(set[i].To == number) {
+				filtered.push({
+					"To": set[i].From,
+					"Date": set[i].Datetime.split(' ', 2)[0],
+					"Time": +set[i].Datetime.split(' ', 2)[1],
+					"Duration": set[i].Duration,
+					"Celltower": set[i].Celltower
+				});
+			}
+		}
+		return filtered;
+	}
+	
+	//Converts objects to json strings in order to compare them
+	function isDuplicate(element, set){
+		for(var i = 0; i < set.length; i++) {
+			if(JSON.stringify(element) == JSON.stringify(set[i].label)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//Goes through each item in the converted set and keep only unique values
+	function removeDuplicate(set){
+		var cleaned = [];
+		cleaned.push({
+			"label": set[0].label,
+			"value": set[0].value
+		});
+		for(var i = 1; i < set.length; i++) {
+			if(isDuplicate(set[i].label, cleaned) == false){
+				cleaned.push({
+					"label": set[i].label,
+					"value": set[i].value
+				});
+			}
+		}
+		return cleaned;
+	}
+	
+	//reduce the data to only the contacted number and the number of times contacted
+	function convert2pie(set){
+		var converted = [];
+		var value = 0;
+		for(var i = 0; i < set.length; i++) {			
+			for(var j = 0; j < set.length; j++) {
+					if (set[i].To == set[j].To){
+						value++;
+					}					
+			}
+			converted.push({
+				"label": +set[i].To,
+				"value": value
+			});
+			value = 0;
+		}
+		return removeDuplicate(converted);
+	}
+	
+	//Filter the data set to the limit
+	function limitData(set){
+		var limited = [];
+		var min = document.getElementById("min").value;
+		var max = document.getElementById("max").value;
+		for(var i = 0; i < set.length; i++) {
+			if (set[i].value > min && set[i].value < max ){
+				limited.push({
+					"label": "Phone " + set[i].label,
+					"value": set[i].value
+				});		
+			}
+		}		
+		//In case filter makes the set null
+		if(limited.length == 0){
+			limited.push({
+				"label": "No Contacts",
+				"value": 1
+			});		
+		}	
+		return limited;
+	}
+	
+	//call functions to generate the data set for pie chart
+	function generateData(number){
+		var filteredSet = filter4phone(dataset, number);
+		var convertedSet = convert2pie(filteredSet);
+		var limitedSet = limitData(convertedSet);
+			
+		return limitedSet;
+		//return convert2pie(filteredSet);
+	}
+	
+	//draws the pie chart using d3pie
+	function drawVisualization(number, min, max, data){
+		myPie = new d3pie("pieChart", {
+			"header": {
+				"title": {
+					"text": "Contacts of Phone " + number,
+					"fontSize": 24,
+					"font": "open sans"
+				},
+				"subtitle": {
+					"text": "Shows amount of times " + phone + " has contacted each number. Minimum " 
+						+ min + " calls. Maximum " + max + " calls." ,
+					"color": "#999999",
+					"fontSize": 14,
+					"font": "open sans"
+				},
+				"titleSubtitlePadding": 9
+			},
+			"footer": {
+				"text": "Click on a section to select a phone to compare, hover over another to generate another comparison.",
+				"color": "#999999",
+				"fontSize": 14,
+				"font": "open sans",
+				"location": "bottom-left"
+			},
+			"size": {
+				pieInnerRadius: "60%",
+				canvasHeight: 600,
+				canvasWidth: 600,
+			},
+			"data": {
+				"sortOrder": "value-desc",
+				"content": data
+			},
+			"labels": {
+				"outer": {
+					"format": "label",
+					"pieDistance": 32
+				},
+				"inner": {
+					"format": "value"
+				},
+				"mainLabel": {
+					"fontSize": 11
+				},
+				"percentage": {
+					"color": "#ffffff",
+					"decimalPlaces": 0
+				},
+				"value": {
+					"color": "#adadad",
+					"fontSize": 11
+				},
+				"lines": {
+					"enabled": true
+				}
+			},
+			"effects": {
+				"pullOutSegmentOnClick": {
+					"effect": "none",
+					"speed": 400,
+					"size": 8
+				},
+				highlightSegmentOnMouseover: true,
+				highlightLuminosity: -0.5
+			},
+			misc: {
+				colors: {
+					background: null, // transparent
+					segments: [
+						"#2484c1", "#65a620", "#7b6888", "#a05d56", "#961a1a",
+						"#e98125", "#d0743c", "#635222", "#6ada6a",
+						"#0c6197", "#7d9058", "#207f33", "#44b9b0", "#bca44a",
+						"#e4a14b", "#a3acb2", "#8cc3e9", "#69a6f9", "#5b388f",
+						"#546e91", "#8bde95", "#d2ab58", "#273c71", "#98bf6e",
+						"#4daa4b", "#98abc5", "#cc1010", "#31383b", "#006391",
+						"#c2643f", "#b0a474", "#a5a39c", "#a9c2bc", "#22af8c",
+						"#7fcecf", "#987ac6", "#3d3b87", "#b77b1c", "#c9c2b6",
+						"#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b",
+						"#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
+					],
+					segmentStroke: "#ffffff"
+				},
+				"gradient": {
+					"enabled": true,
+					"percentage": 100
+				}
+			},
+			callbacks: {
+				onload: null,
+				onMouseoverSegment: function(info) {
+					onMouseover(info);
+				},
+				onMouseoutSegment: function(info) {
+					onMouseout(info);
+				},
+				onClickSegment: function(info) {
+					onClick(info);
+				}
+			}
+		});
+	}
+	
+	function drawComparison(original, selected, data){
+		var pie = new d3pie("pieChart", {
+			"header": {
+				"title": {
+					"text": "Contacts between Phone " + original + " and " + selected,
+					"fontSize": 12,
+					"font": "open sans"
+				},
+				"subtitle": {
+					"text": "Shows duration of calls each day in June.",
+					"color": "#999999",
+					"fontSize": 10,
+					"font": "open sans"
+				},
+				"titleSubtitlePadding": 9
+			},
+			"footer": {
+				"text": "Days without contacts are excluded.",
+				"color": "#999999",
+				"fontSize": 10,
+				"font": "open sans",
+				"location": "bottom-center"
+			},
+			"size": {
+				pieInnerRadius: "50%",
+				canvasHeight: 400,
+				canvasWidth: 400,
+			},
+			"data": {
+				"sortOrder": "label",
+				"content": data
+			},
+			"labels": {
+				"outer": {
+					"format": "label",
+					"pieDistance": 16
+				},
+				"inner": {
+					"format": "value"
+				},
+				"mainLabel": {
+					"fontSize": 11
+				},
+				"percentage": {
+					"color": "#ffffff",
+					"decimalPlaces": 0
+				},
+				"value": {
+					"color": "#adadad",
+					"fontSize": 11
+				},
+				"lines": {
+					"enabled": true
+				}
+			},
+			"effects": {
+				"pullOutSegmentOnClick": {
+					"effect": "none",
+					"speed": 400,
+					"size": 8
+				},
+				highlightSegmentOnMouseover: true,
+				highlightLuminosity: -0.5
+			},
+			misc: {
+				colors: {
+					background: null, // transparent
+					segments: [
+						"#2484c1", "#65a620", "#7b6888", "#a05d56", "#961a1a",
+						"#e98125", "#d0743c", "#635222", "#6ada6a",
+						"#0c6197", "#7d9058", "#207f33", "#44b9b0", "#bca44a",
+						"#e4a14b", "#a3acb2", "#8cc3e9", "#69a6f9", "#5b388f",
+						"#546e91", "#8bde95", "#d2ab58", "#273c71", "#98bf6e",
+						"#4daa4b", "#98abc5", "#cc1010", "#31383b", "#006391",
+						"#c2643f", "#b0a474", "#a5a39c", "#a9c2bc", "#22af8c",
+						"#7fcecf", "#987ac6", "#3d3b87", "#b77b1c", "#c9c2b6",
+						"#807ece", "#8db27c", "#be66a2", "#9ed3c6", "#00644b",
+						"#005064", "#77979f", "#77e079", "#9c73ab", "#1f79a7"
+					],
+					segmentStroke: "#ffffff"
+				},
+				"gradient": {
+					"enabled": true,
+					"percentage": 100
+				},
+				canvasPadding: {
+					bottom: 50
+				}
+			}
+		});
+	}
+	
+	//Draws the pie chart using d3pie when Search is Clicked
+	function drawUpdate(){		
+	
+		phone = document.getElementById("searchTxt").value;
+		var min = document.getElementById("min").value;
+		var max = document.getElementById("max").value;
+		var data = generateData(document.getElementById("searchTxt").value);		
+		
+		if (myPie != null){
+			myPie.destroy();
+		}
+		drawVisualization(phone, min, max, data);		
+	}
+	
+	//Converts filtered data into readable set for graph
+	function convert4selected(set){
+		var converted = [];
+		var value = 0;
+		for(var i = 0; i < set.length; i++) {		
+			for(var j = 0; j < set.length; j++) {
+					if (set[i].Date == set[j].Date){
+						value += set[j].Duration;
+					}					
+			}
+			converted.push({
+				"label": "June " + set[i].Date,
+				"value": value
+			});
+			value = 0;
+		}
+		/*
+		for(var i = 0; i < set.length; i++) {
+			converted.push({
+				"label": +set[i].Date,
+				"value": +set[i].Duration,
+			});
+		}
+		*/
+		return removeDuplicate(converted);
+	}
+	
+	
+	//Filters results of a selected phone against another phone
+	function filter4selected(set, number){
+		var filtered = [];
+		for(var i = 0; i < set.length; i++) {
+			if(set[i].To == number) {
+				filtered.push({
+					"Date": +set[i].Date.substring(6,8),
+					"Time": +set[i].Time,
+					"Duration": set[i].Duration,
+					"Celltower": set[i].Celltower
+				});
+			}
+		}
+		return filtered;
+	}
+	
+	//Draw Pie when mouse over segment
+	function onMouseover(segment){
+		var selected = +segment.data.label.substring(6, segment.data.label.length);
+		var selectedSet = filter4phone(dataset, phone);
+		selectedSet = filter4selected(selectedSet, selected);
+		selectedSet = convert4selected(selectedSet);
+		//Replace Pie in Slot 2 if it is filled.
+		if (myPie.element.childNodes.length > 2){
+			myPie.element.removeChild(myPie.element.lastChild);
+		}
+		drawComparison(phone, selected, selectedSet);
+		//Debug
+		//console.log(myPie.element.childNodes.length);
+		//console.log(segment.data.label.substring(6, segment.data.label.length));
+	}
+	
+	function onMouseout(segment){
+		//myPie.element.removeChild(myPie.element.lastChild);
+	}
+	
+	//Draw Pie when segment is clicked
+	function onClick(segment){
+		var selected = +segment.data.label.substring(6, segment.data.label.length)
+		var selectedSet = filter4phone(dataset, phone);
+		selectedSet = filter4selected(selectedSet, selected);
+		selectedSet = convert4selected(selectedSet);
+		//Always replace Pie in Slot 1
+		while (myPie.element.childNodes.length > 1){
+			myPie.element.removeChild(myPie.element.lastChild);
+		}
+		drawComparison(phone, selected, selectedSet);		
+	}
+
+
+</script>
+</body>
+</html>
