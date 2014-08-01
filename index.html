@@ -2,6 +2,7 @@
 <meta charset="utf-8">
 <body>
 
+<<<<<<< HEAD
 	<div>
 		<!-- <form action="demo_form.asp"> -->
 
@@ -54,6 +55,61 @@
 
 		var width = 960,
 		height = 600,
+=======
+  <div>
+    <!-- <form action="demo_form.asp"> -->
+
+    Make & Model Search <br><br>
+    <input type="text" id="modelText" placeholder="Model" name="model"><br><br>
+    <!-- </form> -->
+  </div>
+
+  <div id="makeCheckbox">
+  Make
+    <form action="">
+      <input type="checkbox"  name="make" value="make">Acura
+      <input type="checkbox" name="make" value="make">Audi
+      <br>
+      <input type="checkbox"  name="make" value="make">BMW
+      <input type="checkbox"  name="make" value="make">Chevrolet
+    </form>
+    <br>
+  </div>
+
+  <div>
+  Model
+    <form action="">
+      <input type="checkbox" id="modelCheckbox1" name="model" value="model">Camry
+      <input type="checkbox" id="modelCheckbox2" name="model" value="model">Accord
+      <br>
+      <input type="checkbox" id="modelCheckbox3" name="model" value="model">Corolla
+      <input type="checkbox" id="modelCheckbox4" name="model" value="model">335is
+    </form>
+    <br>
+  </div>
+
+    <div>
+  Miles Per Gallon (MPG)
+<!-- filter brush code goes here -->
+  </div>
+
+
+  <div id="searchButton">
+   <form action="">
+    <br>
+
+    <input type="submit" value="Search">
+  </form>
+</div>
+
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="Bubbles.js"></script>
+<script>
+
+var width = 960,
+	height = 600,
+>>>>>>> FETCH_HEAD
     padding = 1.5, // separation between same-color nodes
     clusterPadding = 6, // separation between different-color nodes
     maxRadius = 12;
