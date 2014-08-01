@@ -258,8 +258,8 @@ d3.csv("FuelEconomyDataset.csv",
 );
 
 function deselectAll(){
-	d3.selectAll('input').property('checked', false)
-	drawUpdate()
+	d3.selectAll('input').property('checked', false);
+	drawUpdate();
 }
 
 function selectAll(){
@@ -301,7 +301,7 @@ function drawUpdate(){
 	nodes = [];
 	//Initialize Data
 	activeMake = getActive(makeList, "Make");	//First filter cars by make
-	var filteredSet = filter(makeList, dataset, "Make"); 	//First filter cars by make	
+	var filteredSet = filter(dataset, makeList, "Make"); 	//First filter cars by make	
 	mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	//End Initialization		
 	visualize();
