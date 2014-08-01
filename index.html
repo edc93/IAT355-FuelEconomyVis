@@ -131,7 +131,7 @@ function car(){
 function mapCar2Nodes(set, data){
 	set.push({
 		"cluster": 19,
-		"radius": 4.590750876350931,
+		"radius": data[0].CombinedMPG,
 		"Make": data[0].Make, //Brand
 		"Model": data[0].Model, //Name of car
 		"Cylinder": data[0].Cylinder,
@@ -174,19 +174,9 @@ d3.csv("FuelEconomyDataset.csv",
 		dataset = data
 		n = dataset.length	//Total number of cars in the dataset
 		m = countMake(dataset, "Make"); //Returns number of makes in dataset
-		//nodes = d3.range(n).map(mapped)
-		/*
-		nodes = d3.range(2).map(car)
-		nodes.push({
-			"cluster": 19,
-			"radius": 4.590750876350931
-			}) 
-		clusters[19] = nodes[2]
-		*/
 		mapCar2Nodes(nodes, dataset);
 		console.log(nodes[0], nodes[1], nodes[2])
-		visualize()
-		
+		visualize()	
 	}
 );
 
