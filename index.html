@@ -85,9 +85,9 @@ function mapped(){
 }
 
 //Converts objects to json strings in order to compare them
-function isMakeDuplicate(element, set){
+function isMakeDuplicate(element, set, index){
 	for(var i = 0; i < set.length; i++) {
-		if(JSON.stringify(element) == JSON.stringify(set[i].Make)){
+		if(JSON.stringify(element) == JSON.stringify(set[i][index])){
 			return true;
 		}
 	}
@@ -95,19 +95,20 @@ function isMakeDuplicate(element, set){
 }
 	
 
-function make(set){
+function countMake(set, index){
 	var cleaned = [];
+	var x = index;
 	cleaned.push({
-		"Make": set[0].Make
+		"Make": set[0][index]
 	});
 	for(var i = 1; i < set.length; i++) {
-		if(isMakeDuplicate(set[i].Make, cleaned) == false){
+		if(isMakeDuplicate(set[i][index], cleaned, index) == false){
 			cleaned.push({
-				"Make": set[i].Make
+				"Make": set[i][index]
 			});
 		}
 	}
-	console.log(cleaned);
+	console.log(cleaned.length, cleaned);
 	return cleaned.length;
 }
 
@@ -132,7 +133,7 @@ d3.csv("FuelEconomyDataset.csv",
 	function(error, data){
 		dataset = data
 		n = dataset.length
-		m = make(dataset); //Returns number of makes in dataset
+		m = countMake(dataset, "Make"); //Returns number of makes in dataset
 		nodes = d3.range(n).map(mapped) //This
 		visualize()
 		console.log(nodes)
