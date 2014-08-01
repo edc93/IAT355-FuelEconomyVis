@@ -117,6 +117,7 @@ var clusters = new Array(m);
 var dataset = [];
 var nodes = [];
 var makeList = [];
+var activeMake = [];
 var node;
 var svg;
 var force;
@@ -260,18 +261,25 @@ function toggleAcura(){
 }
 
 function getActive(set, index){
+	var active = [];
 	for (var i = 0; i < set.length; i++){
-		
+		//console.log(document.getElementById("Acura").checked);
+		if(document.getElementById(set[i][index]).checked == true){		
+		//if(document.getElementById("Acura").checked == true){
+			active.push(set[i]);
+		}
 	}
+	return active;
 }
 
 function filter(set, index){
 	var filtered = [];
 	for (var i = 0; i < set.length; i++){
-		if (isDuplicate(set[i][index], activeMakes, index) ==  true){
+		if (isDuplicate(set[i][index], activeMake, index) ==  true){
 			filtered.push(set[i]);
 		}
 	}
+	return filtered;
 }
 
 //Updates dataset and filters
@@ -280,11 +288,10 @@ function drawUpdate(){
 	d3.select("svg").remove();
 	//Initialize Data
 	activeMake = getActive(makeList, "Make");
-	filteredSet = filter(dataset, "Make"); //First filter cars by make
-	console.log(filteredSet); //Debug
-	mapCar2Nodes(nodes, dataset, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+	var filteredSet = filter(dataset, "Make"); //First filter cars by make
+	mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	//End Initialization		
-	
+	console.log(activeMake); //Debug
 	visualize();
 }
 
