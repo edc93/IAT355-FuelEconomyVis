@@ -134,19 +134,19 @@ function car(){
 
 function makeNumber(element){
 	for (var i = 0; i < makeList.length; i++){
-		if(isDuplicate(element, makeList, "Make") == true){
+		if(element == makeList[i].Make){
 			return i;
 		}
 	}
 	return 0;
 }
 
-function mapCar2Nodes(set, data){
+function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
-		radiusValue = data[i].CombinedMPG;
+		radiusValue = data[i][index];
 		set.push({
 			"cluster": clusterNumber,
 			"radius": radiusValue,
@@ -196,7 +196,7 @@ d3.csv("FuelEconomyDataset.csv",
 		m = makeList.length	//Set number of makes as well as clusters
 		//End Initialization
 		
-		mapCar2Nodes(nodes, dataset);
+		mapCar2Nodes(nodes, dataset, "CombinedMPG");
 		console.log(makeList, nodes[0], nodes[1], nodes[2])
 		visualize()	
 	}
