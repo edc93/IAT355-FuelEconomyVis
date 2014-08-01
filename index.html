@@ -198,7 +198,7 @@ function mapCar2Nodes(set, data, index){
 	var high = getHighest(data, index);
 	var scale = d3.scale.linear()
                     .domain([low, high])
-                    .range([1, 20]);
+                    .range([3, 20]);
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
 		radiusValue = scale(data[i][index]);
@@ -276,11 +276,12 @@ function getActive(set, index){
 	return active;
 }
 
-function filter(set, index){
+//Checks each element in 'data' and compare it with every element in 'set', if there exist duplicates, add that into the filtered set
+function filter(data, set, index){
 	var filtered = [];
-	for (var i = 0; i < set.length; i++){
-		if (isDuplicate(set[i][index], activeMake, index) ==  true){
-			filtered.push(set[i]);
+	for (var i = 0; i < data.length; i++){
+		if (isDuplicate(data[i][index], set, index) ==  true){
+			filtered.push(data[i]);
 		}
 	}
 	return filtered;
@@ -292,24 +293,14 @@ function drawUpdate(){
 	d3.select("svg").remove();
 	nodes = [];
 	//Initialize Data
-	activeMake = getActive(makeList, "Make");
-	var filteredSet = filter(dataset, "Make"); //First filter cars by make	
+	activeMake = getActive(makeList, "Make");	//First filter cars by make
+	var filteredSet = filter(makeList, dataset, "Make"); 	//First filter cars by make	
 	mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	//End Initialization		
-	console.log(filteredSet); //Debug
 	visualize();
 }
 
-// clears and redraws the visualization when the search button is clicked
-/*function search(){
-	clearVisualization();
-}
-
-// clears and resets the visualization
-function clearVisualization(){
-	svg.html("");
-}*/
-
+//Draws the visualization
 function visualize(){
 	// Use the pack layout to initialize node positions.
 	d3.layout.pack()
