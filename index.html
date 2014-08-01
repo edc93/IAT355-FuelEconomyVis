@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <body>
-
+	<div id="tooltip">
+	</div>
 <div>
 		<!-- <form action="demo_form.asp"> -->
 
@@ -50,6 +51,20 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="Bubbles.js"></script>
+<style type="text/css">
+
+	#tooltip{
+		visibility: hidden;
+		background: black;
+		color: white;
+		padding: 10px;
+		position: absolute;
+		border-radius: 10px;
+		z-index: 10;
+	}
+</style>
+
+
 <script>
 
 var width = 960,
@@ -283,6 +298,8 @@ function visualize(){
 	.data(nodes)
 	.enter().append("circle")
 	.style("fill", function(d) { return color(d.cluster); })
+	// .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+	.on("mouseover", mouseOverPointFn)
 	.call(force.drag);
 
 	node.transition()
@@ -292,6 +309,14 @@ function visualize(){
 		var i = d3.interpolate(0, d.radius);
 		return function(t) { return d.radius = i(t); };
 	});
+}
+
+function mouseOverPointFn(){
+			//draw tooltip
+		d3.select("#tooltip")
+			.style("visibility", "visible")
+			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+			// .html("x: " + d.x + "<br/>y: " + d.y);
 }
 
 function tick(e) {
