@@ -122,8 +122,8 @@ d3.csv("FuelEconomyDataset.csv",
 		}
 		);
 
-/*d3.select('#makeCheckbox')
-.on("checked",visualize);*/
+d3.select('.filterMake')
+.on("click",clearVisualization);
 
 d3.select('#searchButton')
 .on("click", search);
