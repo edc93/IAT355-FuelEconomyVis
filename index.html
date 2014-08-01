@@ -6,7 +6,7 @@
 		<!-- <form action="demo_form.asp"> -->
 
 		Make & Model Search <br><br>
-		<input type="text" id="modelText" placeholder="Model" name="model"><br><br>
+		<input class="searchField" type="text" id="modelText" placeholder="Model" name="modelText" value=""><br><br>
 		<!-- </form> -->
 	</div>
 
@@ -41,10 +41,10 @@
 
 
   <div id="searchButton">
-   <form action="">
+   <form>
     <br>
 
-    <input type="submit" value="Search">
+    <input type="button" value="Search" onclick="drawUpdate()">
   </form>
 </div>
 
@@ -72,6 +72,9 @@ var nodes;
 var node;
 var svg;
 var force;
+
+var model = document.getElementById("modelText").value;
+var Acura = false;
 
 //This function maps cars
 function mapped(){
@@ -161,27 +164,34 @@ d3.csv("FuelEconomyDataset.csv",
 );
 
 d3.select('.filterMake')
-.on("click",clearVisualization);
+.on("click",setCheckboxToTrue);
 
-d3.select('#searchButton')
-.on("click", search);
+
 
 function setCheckboxToTrue() {
 	d3.selectAll("input").each(function(d){ 
-		if(d3.select(this).attr("type") == "checkbox") 
-			d3.select(this).node().value = true;
+		if(d3.select(this).attr("type") == "checkbox") {
+			Acura = true;
+
+		}
 	});
 }
 
+function drawUpdate(){		
+	
+	model = document.getElementById("modelText").value;
+	
+}
+
 // clears and redraws the visualization when the search button is clicked
-function search(){
+/*function search(){
 	clearVisualization();
 }
 
 // clears and resets the visualization
 function clearVisualization(){
 	svg.html("");
-}
+}*/
 
 function visualize(){
 	// Use the pack layout to initialize node positions.
