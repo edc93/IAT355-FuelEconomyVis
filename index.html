@@ -14,7 +14,7 @@
 	<div class="filterMake">
 		Make
 		<form action="">
-			<input type="checkbox" id="Acura" checked onclick="drawUpdate()">Acura
+			<input type="checkbox" id="Acura" checked onclick="toggleAcura()">Acura
 			<input type="checkbox" id="Audi" checked onclick="drawUpdate()">Audi
 			<br>
 			<input type="checkbox" id="BMW" checked onclick="drawUpdate()">BMW
@@ -84,7 +84,7 @@ var clusters = new Array(m);
 var dataset = [];
 var nodes = [];
 var makeList = [];
-//var node;
+var node;
 var svg;
 var force;
 
@@ -248,13 +248,15 @@ function setCheckboxToTrue() {
 }*/
 
 //cheap way of setting checked to true (need to make it loop through all checkboxes)
-function setAcuraToTrue(){
-	Acura = true;
-	console.log("You typed in " + model);
+function toggleAcura(){
+	
+	document.getElementById("Audi").checked
 }
 
 function drawUpdate(){			
 	model = document.getElementById("modelText").value;
+	d3.select("svg").remove();
+	visualize();
 	//console.log("You typed in " + model);
 	//console.log(document.getElementById("Audi").checked);
 	// poop = document.getElementsByClassName("filterMake").values;
