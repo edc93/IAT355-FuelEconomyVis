@@ -84,8 +84,30 @@ function mapped(){
 	return d;
 }
 
-function make(){
-	var set = [];
+//Converts objects to json strings in order to compare them
+function isDuplicate(element, set){
+	for(var i = 0; i < set.length; i++) {
+		if(JSON.stringify(element) == JSON.stringify(set[i].label)){
+			return true;
+		}
+	}
+	return false;
+}
+	
+
+function make(set){
+	var cleaned = [];
+	cleaned.push({
+		"Make": set[0].Make
+	});
+	for(var i = 1; i < set.length; i++) {
+		if(isDuplicate(set[i].label, cleaned) == false){
+			cleaned.push({
+				"label": set[i].label,
+				"value": set[i].value
+			});
+		}
+	}
 	return 12;
 }
 
@@ -110,7 +132,7 @@ d3.csv("FuelEconomyDataset.csv",
 	function(error, data){
 		dataset = data
 		n = dataset.length
-		m = make(); //Returns number of makes in dataset
+		m = make(dataset); //Returns number of makes in dataset
 		nodes = d3.range(n).map(mapped) //This
 		visualize()
 		console.log(nodes)
