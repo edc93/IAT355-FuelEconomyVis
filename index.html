@@ -349,7 +349,7 @@ function mouseOverPointFn(d,i){
 			d3.select("#tooltip")
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>CombinedMPG: " + d.CombinedMPG);
+			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG);
 		}
 
 function tick(e) {
