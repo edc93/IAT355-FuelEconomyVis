@@ -93,18 +93,6 @@ var model = document.getElementById("modelText").value;
 var poop = document.getElementsByClassName("filterMakeCheck").values;
 var Acura = false;
 
-//This function maps cars
-function mapped(){
-	var i = Math.floor(Math.random() * m) //Which Cluster
-	var r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius //Value, size of circle
-	var d = {cluster: i, radius: r}; 
-	//console.log(d);
-	if (!clusters[i] || (r > clusters[i].radius)){
-		clusters[i] = d;
-	} 
-	return d;
-}
-
 //Converts objects to json strings in order to compare them
 function isDuplicate(element, set, index){
 	for(var i = 0; i < set.length; i++) {
@@ -227,41 +215,45 @@ d3.csv("FuelEconomyDataset.csv",
 		n = dataset.length	//Total number of cars in the dataset
 		makeList = countMake(dataset, "Make"); //Returns a set of all makes
 		m = makeList.length	//Set number of makes as well as clusters
-		//End Initialization		
 		mapCar2Nodes(nodes, dataset, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+		//End Initialization			
 		console.log(nodes) //Debugging
 		visualize()	
 	}
 );
 
-/*d3.select('.filterMake')
-.on("click",setCheckboxToTrue);
-
-
-
-function setCheckboxToTrue() {
-	d3.selectAll("input").each(function(d){ 
-		if(d3.select(this).attr("type") == "checkbox") {
-			Acura = true;
-
-		}
-	});
-}*/
-
 //cheap way of setting checked to true (need to make it loop through all checkboxes)
 function toggleAcura(){
-	
-	document.getElementById("Audi").checked
+	document.getElementById("Audi").checked;
 }
 
+function getActive(set, index){
+	for (var i = 0; i < set.length; i++){
+		
+	}
+}
+
+function filter(set, index){
+	var filtered = [];
+	for (var i = 0; i < set.length; i++){
+		if (isDuplicate(set[i][index], activeMakes, index) ==  true){
+			filtered.push(set[i]);
+		}
+	}
+}
+
+//Updates dataset and filters
 function drawUpdate(){			
 	model = document.getElementById("modelText").value;
 	d3.select("svg").remove();
+	//Initialize Data
+	activeMake = getActive(makeList, "Make");
+	filteredSet = filter(dataset, "Make"); //First filter cars by make
+	console.log(filteredSet); //Debug
+	mapCar2Nodes(nodes, dataset, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+	//End Initialization		
+	
 	visualize();
-	//console.log("You typed in " + model);
-	//console.log(document.getElementById("Audi").checked);
-	// poop = document.getElementsByClassName("filterMake").values;
-	// console.log(poop);
 }
 
 // clears and redraws the visualization when the search button is clicked
