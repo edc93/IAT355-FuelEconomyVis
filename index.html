@@ -149,9 +149,14 @@ d3.csv("FuelEconomyDataset.csv",
 		m = countMake(dataset, "Make"); //Returns number of makes in dataset
 		//nodes = d3.range(n).map(mapped)
 		nodes = d3.range(2).map(car)
-		//nodes[3] = {"cluster": 1, "radius": 2}; 
+		nodes.push({
+			"cluster": 19,
+			"radius": 4.590750876350931
+			}) 
+		clusters[19] = nodes[2]
+		console.log(nodes[1], nodes[2])
 		visualize()
-		console.log(nodes[0])
+		
 	}
 );
 
