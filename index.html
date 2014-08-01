@@ -13,7 +13,7 @@
 	<div class="filterMake">
 		Make
 		<form action="">
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox1" name="make" value="false">Acura
+			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox1" name="make" value="false" onclick="setAcuraToTrue()">Acura
 			<input class="filterMakeCheck" type="checkbox" id="makeCheckbox2" name="make" value="false">Audi
 			<br>
 			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox3" name="make" value="false">BMW
@@ -232,12 +232,17 @@ function setCheckboxToTrue() {
 	});
 }*/
 
+//cheap way of setting checked to true (need to make it loop through all checkboxes)
+function setAcuraToTrue(){
+	Acura = true;
+}
+
 function drawUpdate(){		
 	
 	model = document.getElementById("modelText").value;
 	console.log("You typed in " + model);
-	poop = document.getElementsByClassName("filterMake").values;
-	console.log(poop);
+	// poop = document.getElementsByClassName("filterMake").values;
+	// console.log(poop);
 
 	
 	
