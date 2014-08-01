@@ -161,7 +161,11 @@ d3.select('.filterMake')
 d3.select('#searchButton')
 .on("click", search);
 
-function setMakeChecked(){
+function setCheckboxToTrue() {
+	d3.selectAll("input").each(function(d){ 
+		if(d3.select(this).attr("type") == "checkbox") 
+			d3.select(this).node().value = true;
+	});
 }
 
 // clears and redraws the visualization when the search button is clicked
