@@ -10,14 +10,14 @@
     <!-- </form> -->
   </div>
 
-  <div>
+  <div id="makeCheckbox">
   Make
     <form action="">
-      <input type="checkbox" id="makeCheckbox" name="make" value="make">Acura
-      <input type="checkbox" id="makeCheckbox" name="make" value="make">Audi
+      <input type="checkbox"  name="make" value="make">Acura
+      <input type="checkbox" name="make" value="make">Audi
       <br>
-      <input type="checkbox" id="makeCheckbox" name="make" value="make">BMW
-      <input type="checkbox" id="makeCheckbox" name="make" value="make">Chevrolet
+      <input type="checkbox"  name="make" value="make">BMW
+      <input type="checkbox"  name="make" value="make">Chevrolet
     </form>
     <br>
   </div>
@@ -25,11 +25,11 @@
   <div>
   Model
     <form action="">
-      <input type="checkbox" id="modelCheckbox" name="model" value="model">Camry
-      <input type="checkbox" id="modelCheckbox" name="model" value="model">Accord
+      <input type="checkbox" id="modelCheckbox1" name="model" value="model">Camry
+      <input type="checkbox" id="modelCheckbox2" name="model" value="model">Accord
       <br>
-      <input type="checkbox" id="modelCheckbox" name="model" value="model">Corolla
-      <input type="checkbox" id="modelCheckbox" name="model" value="model">335is
+      <input type="checkbox" id="modelCheckbox3" name="model" value="model">Corolla
+      <input type="checkbox" id="modelCheckbox4" name="model" value="model">335is
     </form>
     <br>
   </div>
@@ -40,8 +40,8 @@
   </div>
 
 
-  <div>
-   <form action="http://fc03.deviantart.net/fs70/f/2013/260/6/4/let_s_hewarestdgfhg_by_prussla-d6mns3c.jpg">
+  <div id="submitButton">
+   <form action="">
     <br>
 
     <input type="submit" value="Submit">
@@ -114,12 +114,26 @@ d3.csv("FuelEconomyDataset.csv",
 		function(error, data){
 			dataset = data
 			n = dataset.length
-			m = make(); // This is yours
+			//m = make(); // This is yours
 			nodes = d3.range(n).map(mapped) //This
-			visualize()
+			//visualize()
 			console.log(nodes)
 		}
 );
+
+/*d3.select('#makeCheckbox')
+.on("checked",visualize);*/
+
+d3.select('#submitButton')
+.on("click", visualize);
+
+function setMakeChecked(){
+}
+
+// clears and resets the visualization
+function clearVisualization(){
+  svg.html("");
+}
 
 function visualize(){
 	// Use the pack layout to initialize node positions.
