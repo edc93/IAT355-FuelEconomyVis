@@ -335,12 +335,12 @@ function drawUpdate(){
 	filteredSet = filter(dataset, activeMake, "Make"); 	//First filter cars by make	
 	var transmissionList = count(dataset, "Transmission");
 	var activeTransmission = getActive(transmissionList, "Transmission");	//Second filter cars by transmission	
-	filteredSet = filter(dataset, activeTransmission, "Transmission");				//Second filter cars by transmission
+	filteredSet = filter(filteredSet, activeTransmission, "Transmission");				//Second filter cars by transmission
 	if (filteredSet.length > 0){
 		mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	}	
 	//End Initialization
-	console.log(transmissionList);	
+	//console.log(transmissionList);	
 	visualize();
 }
 
