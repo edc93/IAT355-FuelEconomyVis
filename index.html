@@ -14,6 +14,7 @@
 	<div class="filterMake">
 		Make
 		<form action="">
+			<button type='button' onclick='deselectAll()'>Deselect All</button><br>
 			<input type="checkbox" id="Acura" checked onclick="toggleAcura()">Acura
 			<input type="checkbox" id="Aston Martin" checked onclick="drawUpdate()">Aston Martin
 			<input type="checkbox" id="Audi" checked onclick="drawUpdate()">Audi
@@ -255,6 +256,10 @@ d3.csv("FuelEconomyDataset.csv",
 	}
 );
 
+function deselectAll(){
+	d3.selectAll('input').property('checked', false)
+	drawUpdate()
+}
 //cheap way of setting checked to true (need to make it loop through all checkboxes)
 function toggleAcura(){
 	document.getElementById("Audi").checked;
