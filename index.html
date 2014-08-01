@@ -90,7 +90,7 @@ function mapped(){
 }
 
 //Converts objects to json strings in order to compare them
-function isMakeDuplicate(element, set, index){
+function isDuplicate(element, set, index){
 	for(var i = 0; i < set.length; i++) {
 		if(JSON.stringify(element) == JSON.stringify(set[i][index])){
 			return true;
@@ -108,7 +108,7 @@ function countMake(set, index){
 		"cluster": number
 	});
 	for(var i = 1; i < set.length; i++) {
-		if(isMakeDuplicate(set[i][index], cleaned, index) == false){
+		if(isDuplicate(set[i][index], cleaned, index) == false){
 			number++;
 			cleaned.push({
 				"Make": set[i][index],
@@ -132,27 +132,41 @@ function car(){
 	return d;
 }
 
+function makeNumber(element){
+	for (var i = 0; i < makeList.length; i++){
+		if(isDuplicate(element, makeList, "Make") == true){
+			return i;
+		}
+	}
+	return 0;
+}
+
 function mapCar2Nodes(set, data){
-	set.push({
-		"cluster": 19,
-		"radius": data[0].CombinedMPG,
-		"Make": data[0].Make, //Brand
-		"Model": data[0].Model, //Name of car
-		"Cylinder": data[0].Cylinder,
-		"Transmission": data[0].Transmission,
-		"Drive": data[0].Drive,
-		"Fuel": data[0].Fuel,
-		"Cost": data[0].Cost,
-		"CityMPG": data[0].CityMPG,
-		"HighwayMPG": data[0].HighwayMPG,
-		"CombinedMPG": data[0].CombinedMPG,
-		"CityCO2": data[0].CityCO2,
-		"HighwayCO2": data[0].HighwayCO2,
-		"CombinedCO2": data[0].CombinedCO2
-	});
-	clusters[19] = set[0];	
+	var clusterNumber;
+	var radiusValue;
 	for(var i = 0; i < data.length; i++){
-		
+		clusterNumber = makeNumber(data[i].Make);
+		radiusValue = data[i].CombinedMPG;
+		set.push({
+			"cluster": clusterNumber,
+			"radius": radiusValue,
+			"Make": data[i].Make, //Brand
+			"Model": data[i].Model, //Name of car
+			"Cylinder": data[i].Cylinder,
+			"Transmission": data[i].Transmission,
+			"Drive": data[i].Drive,
+			"Fuel": data[i].Fuel,
+			"Cost": data[i].Cost,
+			"CityMPG": data[i].CityMPG,
+			"HighwayMPG": data[i].HighwayMPG,
+			"CombinedMPG": data[i].CombinedMPG,
+			"CityCO2": data[i].CityCO2,
+			"HighwayCO2": data[i].HighwayCO2,
+			"CombinedCO2": data[i].CombinedCO2
+		});
+		if (!clusters[clusterNumber] || (radiusValue > clusters[clusterNumber].radius)){
+			clusters[clusterNumber] = set[i];	
+		} 			
 	}
 }
 
