@@ -13,11 +13,11 @@
 	<div class="filterMake">
 		Make
 		<form action="">
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox1" name="make" value="make">Acura
-			<input class="filterMakeCheck" type="checkbox" id="makeCheckbox2" name="make" value="make">Audi
+			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox1" name="make" value="false">Acura
+			<input class="filterMakeCheck" type="checkbox" id="makeCheckbox2" name="make" value="false">Audi
 			<br>
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox3" name="make" value="make">BMW
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox4" name="make" value="make">Chevrolet
+			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox3" name="make" value="false">BMW
+			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox4" name="make" value="false">Chevrolet
 		</form>
 		<br>
 	</div>
@@ -75,6 +75,7 @@ var svg;
 var force;
 
 var model = document.getElementById("modelText").value;
+var poop = document.getElementsByClassName("filterMakeCheck").values;
 var Acura = false;
 
 //This function maps cars
@@ -202,7 +203,7 @@ d3.csv("FuelEconomyDataset.csv",
 	}
 );
 
-d3.select('.filterMake')
+/*d3.select('.filterMake')
 .on("click",setCheckboxToTrue);
 
 
@@ -214,11 +215,15 @@ function setCheckboxToTrue() {
 
 		}
 	});
-}
+}*/
 
 function drawUpdate(){		
 	
 	model = document.getElementById("modelText").value;
+	console.log("You typed in " + model);
+	poop = document.getElementsByClassName("filterMake").values;
+	console.log(poop);
+
 	
 	
 }
