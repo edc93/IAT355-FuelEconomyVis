@@ -84,7 +84,7 @@ function mapped(){
 	return d;
 }
 
-/*function make(){
+function make(){
 	var set = [];
 	for(var i = 0; i < set.length; i++) {
 		if(set[i] == dataset[i]){
@@ -92,7 +92,7 @@ function mapped(){
 			set[0+1] = dataset[i].make;
 		}
 	}
-}*/
+}
 
 d3.csv("FuelEconomyDataset.csv", 
 	function(row){
@@ -115,12 +115,13 @@ d3.csv("FuelEconomyDataset.csv",
 	function(error, data){
 		dataset = data
 		n = dataset.length
-			//m = make(); // This is yours
-			nodes = d3.range(n).map(mapped) //This
-			visualize()
-			console.log(nodes)
-		}
-		);
+		m = make(); //Returns number of makes in dataset
+		nodes = d3.range(n).map(mapped) //This
+		visualize()
+		console.log(nodes)
+		console.log(c)
+	}
+);
 
 d3.select('.filterMake')
 .on("click",clearVisualization);
