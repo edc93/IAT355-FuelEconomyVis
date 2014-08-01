@@ -6,15 +6,15 @@
 <div>
 		<!-- <form action="demo_form.asp"> -->
 
-		Make & Model Search <br><br>
+		<h3>Make & Model Search</h3> 
 		<input class="searchField" type="text" id="modelText" placeholder="Model" name="modelText" value=""><br><br>
 		<!-- </form> -->
 	</div>
 
 	<div class="filterMake">
-		Make
+		<strong>Make</strong>
 		<form action="">
-			<button type='button' onclick='deselectAll()'>Deselect All</button><br>
+			<button type='button' onclick='deselectAll()'>Deselect All</button>
 			<button type='button' onclick='selectAll()'>Select All</button><br>
 			<input type="checkbox" id="Acura" checked onclick="toggleAcura()">Acura
 			<input type="checkbox" id="Aston Martin" checked onclick="drawUpdate()">Aston Martin
@@ -58,14 +58,32 @@
 		<br>
 	</div>
 
-	<div class="filterModel">
-		Model
+	<div class="filterTransmission">
+		<strong>Transmission</strong>
 		<form action="">
-			<input type="checkbox" id="modelCheckbox1" name="model" value="model">Camry
-			<input type="checkbox" id="modelCheckbox2" name="model" value="model">Accord
+			<input type="checkbox" id="A" checked onclick="drawUpdate()">Automatic
+			<input type="checkbox" id="M" checked onclick="drawUpdate()">Manual
 			<br>
-			<input type="checkbox" id="modelCheckbox3" name="model" value="model">Corolla
-			<input type="checkbox" id="modelCheckbox4" name="model" value="model">335is
+			<input type="checkbox" id="AM" checked onclick="drawUpdate()">Automated Manual
+			<input type="checkbox" id="AMS" checked onclick="drawUpdate()">Automated Manual- Selectable (paddles)
+			<br>
+			<input type="checkbox" id="CVT" checked onclick="drawUpdate()">Continuosly Variable
+			<input type="checkbox" id="SA" checked onclick="drawUpdate()">Semi-Automatic
+			<br>
+			<input type="checkbox" id="SCV" checked onclick="drawUpdate()">Selectable Continously Variable (CVT with paddles)
+		</form>
+		<br>
+	</div>
+
+
+	<div class="filterCylinder">
+		Cylinder
+		<form action="">
+			<input type="checkbox" id="3Cyl" checked onclick="drawUpdate()">3
+<!-- 			<input type="checkbox" id="modelCheckbox2" name="model" value="model">Accord
+			<br>
+			<input type="checkbox" id="modelCheckbox3" name="model" value="model">Corolla -->
+			<input type="checkbox" id="16Cyl" checked onclick="drawUpdate()">16
 		</form>
 		<br>
 	</div>
@@ -352,7 +370,7 @@ function mouseOverPointFn(d,i){
 			d3.select("#tooltip")
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG);
+			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG);
 		}
 
 function tick(e) {
