@@ -68,7 +68,7 @@ var n = 200, // total number of nodes
 var clusters = new Array(m);
 
 var dataset = [];
-var nodes;
+var nodes = [];
 var node;
 var svg;
 var force;
@@ -128,6 +128,30 @@ function car(){
 	return d;
 }
 
+function mapCar2Nodes(set, data){
+	set.push({
+		"cluster": 19,
+		"radius": 4.590750876350931,
+		"Make": data[0].Make, //Brand
+		"Model": data[0].Model, //Name of car
+		"Cylinder": data[0].Cylinder,
+		"Transmission": data[0].Transmission,
+		"Drive": data[0].Drive,
+		"Fuel": data[0].Fuel,
+		"Cost": data[0].Cost,
+		"CityMPG": data[0].CityMPG,
+		"HighwayMPG": data[0].HighwayMPG,
+		"CombinedMPG": data[0].CombinedMPG,
+		"CityCO2": data[0].CityCO2,
+		"HighwayCO2": data[0].HighwayCO2,
+		"CombinedCO2": data[0].CombinedCO2
+	});
+	clusters[19] = set[0];	
+	for(var i = 0; i < data.length; i++){
+		
+	}
+}
+
 d3.csv("FuelEconomyDataset.csv", 
 	function(row){
 		return{
@@ -151,13 +175,16 @@ d3.csv("FuelEconomyDataset.csv",
 		n = dataset.length	//Total number of cars in the dataset
 		m = countMake(dataset, "Make"); //Returns number of makes in dataset
 		//nodes = d3.range(n).map(mapped)
+		/*
 		nodes = d3.range(2).map(car)
 		nodes.push({
 			"cluster": 19,
 			"radius": 4.590750876350931
 			}) 
 		clusters[19] = nodes[2]
-		console.log(nodes[1], nodes[2])
+		*/
+		mapCar2Nodes(nodes, dataset);
+		console.log(nodes[0], nodes[1], nodes[2])
 		visualize()
 		
 	}
