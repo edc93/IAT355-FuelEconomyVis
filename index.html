@@ -13,11 +13,11 @@
 	<div class="filterMake">
 		Make
 		<form action="">
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox1" name="make" value="false" onclick="setAcuraToTrue()">Acura
-			<input class="filterMakeCheck" type="checkbox" id="makeCheckbox2" name="make" value="false">Audi
+			<input type="checkbox" id="Acura" checked onclick="drawUpdate()">Acura
+			<input type="checkbox" id="Audi" checked onclick="drawUpdate()">Audi
 			<br>
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox3" name="make" value="false">BMW
-			<input class="filterMakeCheck" type="checkbox"  id="makeCheckbox4" name="make" value="false">Chevrolet
+			<input type="checkbox" id="BMW" checked onclick="drawUpdate()">BMW
+			<input type="checkbox" id="Chevrolet" checked onclick="drawUpdate()">Chevrolet
 		</form>
 		<br>
 	</div>
@@ -43,7 +43,6 @@
   <div id="searchButton">
    <form>
     <br>
-
     <input type="button" value="Search" onclick="drawUpdate()">
   </form>
 </div>
@@ -236,17 +235,15 @@ function setCheckboxToTrue() {
 //cheap way of setting checked to true (need to make it loop through all checkboxes)
 function setAcuraToTrue(){
 	Acura = true;
+	console.log("You typed in " + model);
 }
 
-function drawUpdate(){		
-	
+function drawUpdate(){			
 	model = document.getElementById("modelText").value;
 	console.log("You typed in " + model);
+	console.log(document.getElementById("Audi").checked);
 	// poop = document.getElementsByClassName("filterMake").values;
 	// console.log(poop);
-
-	
-	
 }
 
 // clears and redraws the visualization when the search button is clicked
