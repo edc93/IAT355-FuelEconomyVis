@@ -263,9 +263,8 @@ function toggleAcura(){
 function getActive(set, index){
 	var active = [];
 	for (var i = 0; i < set.length; i++){
-		//console.log(document.getElementById("Acura").checked);
+		//console.log(document.getElementById("Audi").checked, set[2][index], document.getElementById(set[2][index]).checked);
 		if(document.getElementById(set[i][index]).checked == true){		
-		//if(document.getElementById("Acura").checked == true){
 			active.push(set[i]);
 		}
 	}
@@ -286,12 +285,13 @@ function filter(set, index){
 function drawUpdate(){			
 	model = document.getElementById("modelText").value;
 	d3.select("svg").remove();
+	nodes = [];
 	//Initialize Data
 	activeMake = getActive(makeList, "Make");
-	var filteredSet = filter(dataset, "Make"); //First filter cars by make
+	var filteredSet = filter(dataset, "Make"); //First filter cars by make	
 	mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	//End Initialization		
-	console.log(activeMake); //Debug
+	console.log(filteredSet); //Debug
 	visualize();
 }
 
