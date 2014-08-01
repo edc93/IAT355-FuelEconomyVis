@@ -85,9 +85,9 @@ function mapped(){
 }
 
 //Converts objects to json strings in order to compare them
-function isDuplicate(element, set){
+function isMakeDuplicate(element, set){
 	for(var i = 0; i < set.length; i++) {
-		if(JSON.stringify(element) == JSON.stringify(set[i].label)){
+		if(JSON.stringify(element) == JSON.stringify(set[i].Make)){
 			return true;
 		}
 	}
@@ -101,14 +101,14 @@ function make(set){
 		"Make": set[0].Make
 	});
 	for(var i = 1; i < set.length; i++) {
-		if(isDuplicate(set[i].label, cleaned) == false){
+		if(isMakeDuplicate(set[i].Make, cleaned) == false){
 			cleaned.push({
-				"label": set[i].label,
-				"value": set[i].value
+				"Make": set[i].Make
 			});
 		}
 	}
-	return 12;
+	console.log(cleaned);
+	return cleaned.length;
 }
 
 d3.csv("FuelEconomyDataset.csv", 
