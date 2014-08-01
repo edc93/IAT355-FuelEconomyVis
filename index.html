@@ -281,8 +281,8 @@ function deselectAll(){
 }
 
 function selectAll(){
-	d3.selectAll('input').property('checked', true)
-	drawUpdate()
+	d3.selectAll('input').property('checked', true);
+	drawUpdate();
 }
 
 //cheap way of setting checked to true (need to make it loop through all checkboxes)
@@ -319,9 +319,12 @@ function drawUpdate(){
 	nodes = [];
 	//Initialize Data
 	activeMake = getActive(makeList, "Make");	//First filter cars by make
-	var filteredSet = filter(dataset, makeList, "Make"); 	//First filter cars by make	
-	mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
-	//End Initialization		
+	var filteredSet = filter(dataset, activeMake, "Make"); 	//First filter cars by make	
+	if (filteredSet.length > 0){
+		mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+	}	
+	//End Initialization
+	console.log(activeMake);	
 	visualize();
 }
 
