@@ -358,6 +358,7 @@ function visualize(){
 	.style("fill", function(d) { return color(d.cluster); })
 	.on("mouseover", mouseOverPointFn)
 	.on("mouseout", mouseOutPointFn)
+	// on click code to trigger bar graph populating
 	.call(force.drag);
 
 	node.transition()
