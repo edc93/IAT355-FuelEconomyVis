@@ -86,12 +86,7 @@ function mapped(){
 
 function make(){
 	var set = [];
-	for(var i = 0; i < set.length; i++) {
-		if(set[i] == dataset[i]){
-		}else{
-			set[0+1] = dataset[i].make;
-		}
-	}
+	return 12;
 }
 
 d3.csv("FuelEconomyDataset.csv", 
@@ -119,7 +114,6 @@ d3.csv("FuelEconomyDataset.csv",
 		nodes = d3.range(n).map(mapped) //This
 		visualize()
 		console.log(nodes)
-		console.log(c)
 	}
 );
 
