@@ -69,7 +69,8 @@ var clusters = new Array(m);
 
 var dataset = [];
 var nodes = [];
-var node;
+var makeList = [];
+//var node;
 var svg;
 var force;
 
@@ -101,19 +102,22 @@ function isMakeDuplicate(element, set, index){
 
 function countMake(set, index){
 	var cleaned = [];
-	var x = index;
+	var number = 0;
 	cleaned.push({
-		"Make": set[0][index]
+		"Make": set[0][index],
+		"cluster": number
 	});
 	for(var i = 1; i < set.length; i++) {
 		if(isMakeDuplicate(set[i][index], cleaned, index) == false){
+			number++;
 			cleaned.push({
-				"Make": set[i][index]
+				"Make": set[i][index],
+				"cluster": number
 			});
 		}
 	}
 	//console.log(cleaned.length, cleaned);
-	return cleaned.length;
+	return cleaned;
 }
 
 //This function maps cars
@@ -171,11 +175,15 @@ d3.csv("FuelEconomyDataset.csv",
 		};
 	},
 	function(error, data){
-		dataset = data
+		//Initialize Data
+		dataset = data		//Complete dataset
 		n = dataset.length	//Total number of cars in the dataset
-		m = countMake(dataset, "Make"); //Returns number of makes in dataset
+		makeList = countMake(dataset, "Make"); //Returns a set of all makes
+		m = makeList.length	//Set number of makes as well as clusters
+		//End Initialization
+		
 		mapCar2Nodes(nodes, dataset);
-		console.log(nodes[0], nodes[1], nodes[2])
+		console.log(makeList, nodes[0], nodes[1], nodes[2])
 		visualize()	
 	}
 );
