@@ -312,12 +312,12 @@ function visualize(){
 	});
 }
 
-function mouseOverPointFn(){
+function mouseOverPointFn(d,i){
 			//draw tooltip
 			d3.select("#tooltip")
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-			// .html("x: " + d.x + "<br/>y: " + d.y);
+			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>CombinedMPG: " + d.CombinedMPG);
 		}
 
 function tick(e) {
