@@ -131,6 +131,7 @@ function makeNumber(element){
 	return 0;
 }
 
+//Returns lowest int value in a set
 function getLowest(set, index){
 	var lowest = set[0][index];
 	for (var i = 1; i < set.length; i++){
@@ -141,6 +142,7 @@ function getLowest(set, index){
 	return lowest;
 }
 
+//Returns highest int value in a set
 function getHighest(set, index){
 	var highest = set[0][index];
 	for (var i = 1; i < set.length; i++){
@@ -210,10 +212,9 @@ d3.csv("FuelEconomyDataset.csv",
 		n = dataset.length	//Total number of cars in the dataset
 		makeList = countMake(dataset, "Make"); //Returns a set of all makes
 		m = makeList.length	//Set number of makes as well as clusters
-		//End Initialization
-		
-		mapCar2Nodes(nodes, dataset, "CombinedMPG");
-		console.log(makeList, nodes[0], nodes[1], nodes[2])
+		//End Initialization		
+		mapCar2Nodes(nodes, dataset, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+		console.log(nodes) //Debugging
 		visualize()	
 	}
 );
