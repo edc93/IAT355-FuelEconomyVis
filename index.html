@@ -115,8 +115,8 @@ function countMake(set, index){
 d3.csv("FuelEconomyDataset.csv", 
 	function(row){
 		return{
-			"Make": row.Make,
-			"Model": row.Model,
+			"Make": row.Make, //Brand
+			"Model": row.Model, //Name of car
 			"Cylinder": +row.Cylinder,
 			"Transmission": row.Transmission,
 			"Drive": row.Drive,
@@ -132,9 +132,9 @@ d3.csv("FuelEconomyDataset.csv",
 	},
 	function(error, data){
 		dataset = data
-		n = dataset.length
+		n = dataset.length	//Total number of cars in the dataset
 		m = countMake(dataset, "Make"); //Returns number of makes in dataset
-		nodes = d3.range(n).map(mapped) //This
+		nodes = d3.range(n).map(mapped)
 		visualize()
 		console.log(nodes)
 	}
