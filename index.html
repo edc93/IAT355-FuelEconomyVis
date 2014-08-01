@@ -40,11 +40,11 @@
   </div>
 
 
-  <div id="submitButton">
+  <div id="searchButton">
    <form action="">
     <br>
 
-    <input type="submit" value="Submit">
+    <input type="submit" value="Search">
   </form>
 </div>
 
@@ -116,7 +116,7 @@ d3.csv("FuelEconomyDataset.csv",
 			n = dataset.length
 			//m = make(); // This is yours
 			nodes = d3.range(n).map(mapped) //This
-			//visualize()
+			visualize()
 			console.log(nodes)
 		}
 );
@@ -124,10 +124,15 @@ d3.csv("FuelEconomyDataset.csv",
 /*d3.select('#makeCheckbox')
 .on("checked",visualize);*/
 
-d3.select('#submitButton')
-.on("click", visualize);
+d3.select('#searchButton')
+.on("click", search);
 
 function setMakeChecked(){
+}
+
+// clears and redraws the visualization when the search button is clicked
+function search(){
+	clearVisualization();
 }
 
 // clears and resets the visualization
