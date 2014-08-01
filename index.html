@@ -300,7 +300,6 @@ function visualize(){
 	.data(nodes)
 	.enter().append("circle")
 	.style("fill", function(d) { return color(d.cluster); })
-	// .on("mouseover", function(){return tooltip.style("visibility", "visible");})
 	.on("mouseover", mouseOverPointFn)
 	.call(force.drag);
 
@@ -315,11 +314,11 @@ function visualize(){
 
 function mouseOverPointFn(){
 			//draw tooltip
-		d3.select("#tooltip")
+			d3.select("#tooltip")
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
 			// .html("x: " + d.x + "<br/>y: " + d.y);
-}
+		}
 
 function tick(e) {
 	node
