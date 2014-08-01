@@ -372,7 +372,6 @@ function visualize(){
 	.enter().append("circle")
 	.style("fill", function(d) { return color(d.cluster); })
 	.on("mouseover", mouseOverPointFn)
-	.on("mouseout", mouseOutPointFn)
 	.call(force.drag);
 
 	node.transition()
@@ -390,10 +389,6 @@ function mouseOverPointFn(d,i){
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
 			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG);
-		}
-
-		var mouseOutPointFn = function (d, i){
-			d3.select("#tooltip").style("visibility", "hidden");
 		}
 
 function tick(e) {
