@@ -148,7 +148,7 @@ var Acura = false;
 
 //Converts objects to json strings in order to compare them
 function isDuplicate(element, set, index){
-	for(var i = 0; i < set.length; i++) {
+	for (var i = 0; i < set.length; i++) {
 		if(JSON.stringify(element) == JSON.stringify(set[i][index])){
 			return true;
 		}
@@ -312,19 +312,35 @@ function filter(data, set, index){
 	return filtered;
 }
 
+//Returns the set of 'index'
+function count(set, index){
+	var total = [];
+	total.push(set[0]);
+	for(var i = 1; i < set.length; i++) {
+		if(isDuplicate(set[i][index], total, index) == false){
+			total.push(set[i]);
+		}
+	}
+	return total;
+}
+
 //Updates dataset and filters
-function drawUpdate(){			
+function drawUpdate(){
+	var filteredSet = [];			
 	model = document.getElementById("modelText").value;
 	d3.select("svg").remove();
 	nodes = [];
 	//Initialize Data
-	activeMake = getActive(makeList, "Make");	//First filter cars by make
-	var filteredSet = filter(dataset, activeMake, "Make"); 	//First filter cars by make	
+	var activeMake = getActive(makeList, "Make");		//First filter cars by make
+	filteredSet = filter(dataset, activeMake, "Make"); 	//First filter cars by make	
+	var transmissionList = count(dataset, "Transmission");
+	var activeTransmission = getActive(transmissionList, "Transmission");	//Second filter cars by transmission	
+	filteredSet = filter(dataset, activeTransmission, "Transmission");				//Second filter cars by transmission
 	if (filteredSet.length > 0){
 		mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
 	}	
 	//End Initialization
-	console.log(activeMake);	
+	console.log(transmissionList);	
 	visualize();
 }
 
