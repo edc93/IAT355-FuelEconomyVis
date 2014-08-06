@@ -131,9 +131,10 @@ var width = 1100,
     maxRadius = 12;
 
 var n = 503, // total number of nodes
-    m = 33; // number of distinct clusters
+    m = 36; // number of distinct clusters
 
-var color = d3.scale.category20().domain(d3.range(m));
+var color = d3.scale.category20()
+	.domain(d3.range(m));
 
 // The largest node for each cluster.
 var clusters = new Array(m);
