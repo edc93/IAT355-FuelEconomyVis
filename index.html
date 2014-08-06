@@ -26,6 +26,7 @@
 			<input type="checkbox" id="Cadillac" checked onclick="drawUpdate()">Cadillac
 			<input type="checkbox" id="Chevrolet" checked onclick="drawUpdate()">Chevrolet
 			<input type="checkbox" id="Chrysler" checked onclick="drawUpdate()">Chrysler
+			<input type="checkbox" id="Dodge" checked onclick="drawUpdate()">Dodge
 			<input type="checkbox" id="FIAT" checked onclick="drawUpdate()">FIAT
 			<input type="checkbox" id="Ford" checked onclick="drawUpdate()">Ford
 			<input type="checkbox" id="GMC" checked onclick="drawUpdate()">GMC
@@ -33,6 +34,7 @@
 			<input type="checkbox" id="Hyundai" checked onclick="drawUpdate()">Hyundai
 			<input type="checkbox" id="Infiniti" checked onclick="drawUpdate()">Infiniti
 			<input type="checkbox" id="Jaguar" checked onclick="drawUpdate()">Jaguar
+			<input type="checkbox" id="Jeep" checked onclick="drawUpdate()">Jeep
 			<input type="checkbox" id="KIA" checked onclick="drawUpdate()">KIA
 			<br>
 			<input type="checkbox" id="Lamborghini" checked onclick="drawUpdate()">Lamborghini
@@ -46,8 +48,10 @@
 			<input type="checkbox" id="Mitsubishi" checked onclick="drawUpdate()">Mitsubishi
 			<input type="checkbox" id="Nissan" checked onclick="drawUpdate()">Nissan
 			<input type="checkbox" id="Porsche" checked onclick="drawUpdate()">Porsche
+			<input type="checkbox" id="Ram" checked onclick="drawUpdate()">Ram
 			<input type="checkbox" id="Scion" checked onclick="drawUpdate()">Scion
 			<input type="checkbox" id="Subaru" checked onclick="drawUpdate()">Subaru
+			<input type="checkbox" id="Toyota" checked onclick="drawUpdate()">Toyota
 			<input type="checkbox" id="Volkswagen" checked onclick="drawUpdate()">Volkswagen
 			<input type="checkbox" id="Volvo" checked onclick="drawUpdate()">Volvo
 
@@ -120,8 +124,8 @@
 
 <script>
 
-var width = 1680,
-	height = 1050,
+var width = 1100,
+	height = 1100,
     padding = 1.5, // separation between same-color nodes
     clusterPadding = 6, // separation between different-color nodes
     maxRadius = 12;
@@ -225,7 +229,7 @@ function mapCar2Nodes(set, data, index){
 	//Scales the highest and lowest to range [3, 20]
 	var scale = d3.scale.linear()
                     .domain([low, high])
-                    .range([lowRange, 20]);
+                    .range([lowRange, 25]);
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
 		radiusValue = scale(data[i][index]);
@@ -262,10 +266,10 @@ function calculateGreen(set){
 	var highestCO2 = getHighest(set, "CombinedCO2");
 	var scaleMPG = d3.scale.linear()
                     .domain([lowestMPG, highestMPG])
-                    .range([0, 300]);
+                    .range([0, 30]);
 	var scaleCO2 = d3.scale.linear()
                     .domain([lowestCO2, highestCO2])
-                    .range([700, 0]);				
+                    .range([70, 0]);				
 	for(var i = 0; i < set.length; i++){
 		var GreenIndex = scaleMPG(set[i].CombinedMPG) + scaleCO2(set[i].CombinedCO2);
 		calculated.push({
