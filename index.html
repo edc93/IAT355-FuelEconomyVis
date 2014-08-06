@@ -213,11 +213,19 @@ function getHighest(set, index){
 function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
+	var lowRange = 3;
+	//Better Scaling for low quantities
+	if (data.length < 50){
+		lowRange = 8;
+	}
+	//Get highest element of type 'index' from dataset
 	var low = getLowest(data, index);
+	//Get lowest element of type 'index' from dataset
 	var high = getHighest(data, index);
+	//Scales the highest and lowest to range [3, 20]
 	var scale = d3.scale.linear()
                     .domain([low, high])
-                    .range([3, 20]);
+                    .range([lowRange, 20]);
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
 		radiusValue = scale(data[i][index]);
@@ -275,11 +283,13 @@ d3.csv("FuelEconomyDataset.csv",
 	}
 );
 
+//Selects all inputs
 function deselectAll(){
 	d3.selectAll('input').property('checked', false);
 	drawUpdate();
 }
 
+//Deselect all inputs
 function selectAll(){
 	d3.selectAll('input').property('checked', true);
 	drawUpdate();
@@ -290,6 +300,7 @@ function toggleAcura(){
 	document.getElementById("Audi").checked;
 }
 
+//Get all active index elements from dataset
 function getActive(set, index){
 	var active = [];
 	for (var i = 0; i < set.length; i++){
@@ -386,12 +397,13 @@ function visualize(){
 	});
 }
 
+//Mouse over function
 function mouseOverPointFn(d,i){
 			//draw tooltip
 			d3.select("#tooltip")
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG);
+			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
 		}
 
 		var mouseOutPointFn = function (d, i){
