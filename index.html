@@ -213,7 +213,7 @@ function getHighest(set, index){
 function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
-	var lowRange = 3;
+	var lowRange = 2;
 	//Better Scaling for low quantities
 	if (data.length < 50){
 		lowRange = 8;
@@ -244,8 +244,8 @@ function mapCar2Nodes(set, data, index){
 			"CombinedMPG": data[i].CombinedMPG,
 			"CityCO2": data[i].CityCO2,
 			"HighwayCO2": data[i].HighwayCO2,
-			"CombinedCO2": data[i].CombinedCO2
-			//"GreenIndex": data[i].GreenIndex
+			"CombinedCO2": data[i].CombinedCO2,
+			"GreenIndex": data[i].GreenIndex
 		});
 		if (!clusters[clusterNumber] || (radiusValue > clusters[clusterNumber].radius)){
 			clusters[clusterNumber] = set[i];	
@@ -253,14 +253,21 @@ function mapCar2Nodes(set, data, index){
 	}
 }
 
+//Calculate Green Index which is a combination of CombinedMPG and CombinedCO2
 function calculateGreen(set){
 	var calculated = [];
 	var lowestMPG = getLowest(set, "CombinedMPG");
 	var highestMPG = getHighest(set, "CombinedMPG");
 	var lowestCO2 = getLowest(set, "CombinedCO2");
 	var highestCO2 = getHighest(set, "CombinedCO2");
+	var scaleMPG = d3.scale.linear()
+                    .domain([lowestMPG, highestMPG])
+                    .range([0, 300]);
+	var scaleCO2 = d3.scale.linear()
+                    .domain([lowestCO2, highestCO2])
+                    .range([700, 0]);				
 	for(var i = 0; i < set.length; i++){
-		var GreenIndex;
+		var GreenIndex = scaleMPG(set[i].CombinedMPG) + scaleCO2(set[i].CombinedCO2);
 		calculated.push({
 			"Make": set[i].Make, //Brand
 			"Model": set[i].Model, //Name of car
@@ -278,7 +285,7 @@ function calculateGreen(set){
 			"GreenIndex": GreenIndex
 		});			
 	}	
-	return set;
+	return calculated;
 }
 
 //CSV to dataset
@@ -306,7 +313,7 @@ d3.csv("FuelEconomyDataset.csv",
 		n = dataset.length	//Total number of cars in the dataset
 		makeList = countMake(dataset, "Make"); //Returns a set of all makes
 		m = makeList.length	//Set number of makes as well as clusters
-		mapCar2Nodes(nodes, dataset, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+		mapCar2Nodes(nodes, dataset, "GreenIndex"); //Puts each object in dataset into a node under 'nodes'
 		//End Initialization			
 		console.log(nodes) //Debugging
 		visualize()	
