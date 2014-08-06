@@ -8,9 +8,9 @@ svg {
 
 /*circle {
   -webkit-transition: fill-opacity 250ms linear;
-}*/
+}
 
-/*.selecting circle {
+.selecting circle {
   fill-opacity: .2;
 }
 
@@ -44,7 +44,7 @@ svg {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-// var data = d3.range(800).map(Math.random);
+var data = d3.range(800).map(Math.random);
 
 var margin = {top: 194, right: 50, bottom: 214, left: 50},
     width = 960 - margin.left - margin.right,
@@ -103,8 +103,8 @@ function brushstart() {
 }
 
 function brushmove() {
-  var s = brush.extent();
-  circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+  var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
+  // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
 }
 
 function brushend() {
