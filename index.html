@@ -218,9 +218,11 @@ function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
 	var lowRange = 2;
+	var highRange = 20;
 	//Better Scaling for low quantities
 	if (data.length < 50){
 		lowRange = 8;
+		highRange = 30;
 	}
 	//Get highest element of type 'index' from dataset
 	var low = getLowest(data, index);
@@ -229,7 +231,7 @@ function mapCar2Nodes(set, data, index){
 	//Scales the highest and lowest to range [3, 20]
 	var scale = d3.scale.linear()
                     .domain([low, high])
-                    .range([lowRange, 25]);
+                    .range([lowRange, highRange]);
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
 		radiusValue = scale(data[i][index]);
