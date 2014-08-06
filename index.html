@@ -386,6 +386,7 @@ function visualize(){
 	.on("mouseover", mouseOverPointFn)
 	.on("mouseout", mouseOutPointFn)
 	// on click code to trigger bar graph populating
+	.on("click", mouseClickFn)
 	.call(force.drag);
 
 	node.transition()
@@ -397,18 +398,23 @@ function visualize(){
 	});
 }
 
+//Mouse Click Function
+function mouseClickFn(d,i){
+	console.log("Clicked: " + d + i);
+}
+
 //Mouse over function
 function mouseOverPointFn(d,i){
-			//draw tooltip
-			d3.select("#tooltip")
-			.style("visibility", "visible")
-			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
-		}
+	//draw tooltip
+	d3.select("#tooltip")
+	.style("visibility", "visible")
+	.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+	.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
+}
 
-		var mouseOutPointFn = function (d, i){
-			d3.select("#tooltip").style("visibility", "hidden");
-		}
+function mouseOutPointFn(d, i){ 
+	d3.select("#tooltip").style("visibility", "hidden");
+}
 
 function tick(e) {
 	node
