@@ -266,10 +266,10 @@ function calculateGreen(set){
 	var highestCO2 = getHighest(set, "CombinedCO2");
 	var scaleMPG = d3.scale.linear()
                     .domain([lowestMPG, highestMPG])
-                    .range([0, 30]);
+                    .range([0, 50]);
 	var scaleCO2 = d3.scale.linear()
                     .domain([lowestCO2, highestCO2])
-                    .range([70, 0]);				
+                    .range([50, 0]);				
 	for(var i = 0; i < set.length; i++){
 		var GreenIndex = scaleMPG(set[i].CombinedMPG) + scaleCO2(set[i].CombinedCO2);
 		calculated.push({
