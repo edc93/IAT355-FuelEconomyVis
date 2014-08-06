@@ -245,6 +245,7 @@ function mapCar2Nodes(set, data, index){
 			"CityCO2": data[i].CityCO2,
 			"HighwayCO2": data[i].HighwayCO2,
 			"CombinedCO2": data[i].CombinedCO2
+			//"GreenIndex": data[i].GreenIndex
 		});
 		if (!clusters[clusterNumber] || (radiusValue > clusters[clusterNumber].radius)){
 			clusters[clusterNumber] = set[i];	
@@ -252,6 +253,35 @@ function mapCar2Nodes(set, data, index){
 	}
 }
 
+function calculateGreen(set){
+	var calculated = [];
+	var lowestMPG = getLowest(set, "CombinedMPG");
+	var highestMPG = getHighest(set, "CombinedMPG");
+	var lowestCO2 = getLowest(set, "CombinedCO2");
+	var highestCO2 = getHighest(set, "CombinedCO2");
+	for(var i = 0; i < set.length; i++){
+		var GreenIndex;
+		calculated.push({
+			"Make": set[i].Make, //Brand
+			"Model": set[i].Model, //Name of car
+			"Cylinder": set[i].Cylinder,
+			"Transmission": set[i].Transmission,
+			"Drive": set[i].Drive,
+			"Fuel": set[i].Fuel,
+			"Cost": set[i].Cost,
+			"CityMPG": set[i].CityMPG,
+			"HighwayMPG": set[i].HighwayMPG,
+			"CombinedMPG": set[i].CombinedMPG,
+			"CityCO2": set[i].CityCO2,
+			"HighwayCO2": set[i].HighwayCO2,
+			"CombinedCO2": set[i].CombinedCO2,
+			"GreenIndex": GreenIndex
+		});			
+	}	
+	return set;
+}
+
+//CSV to dataset
 d3.csv("FuelEconomyDataset.csv", 
 	function(row){
 		return{
@@ -267,12 +297,12 @@ d3.csv("FuelEconomyDataset.csv",
 			"CombinedMPG": +row.CombinedMPG,
 			"CityCO2": +row.CityCO2,
 			"HighwayCO2": +row.HighwayCO2,
-			"CombinedCO2": +row.CombinedCO2
+			"CombinedCO2": +row.CombinedCO2,
 		};
 	},
 	function(error, data){
 		//Initialize Data
-		dataset = data		//Complete dataset
+		dataset = calculateGreen(data)		//Complete dataset
 		n = dataset.length	//Total number of cars in the dataset
 		makeList = countMake(dataset, "Make"); //Returns a set of all makes
 		m = makeList.length	//Set number of makes as well as clusters
