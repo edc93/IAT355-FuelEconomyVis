@@ -688,13 +688,14 @@ var margin = {top: 194, right: 50, bottom: 214, left: 50},
     height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
-    .range([0, width]);
+    .range([0, width / 3])
+    .domain([10,45]);
 
 var y = d3.random.normal(height / 2, height / 8);
 
 var brush = d3.svg.brush()
     .x(x)
-    .extent([.3, .5])   //initial placement of brush
+    .extent([10, 45])   //initial placement of brush
     .on("brushstart", brushstart)
     .on("brush", brushmove)
     .on("brushend", brushend);
