@@ -264,7 +264,7 @@ function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
 	var lowRange = 1;
-	var highRange = 10;
+	var highRange = 11;
 	//Better Scaling for low quantities
 	if (data.length < 50){
 		lowRange = 8;
@@ -281,6 +281,7 @@ function mapCar2Nodes(set, data, index){
 	for(var i = 0; i < data.length; i++){
 		clusterNumber = makeNumber(data[i].Make);
 		radiusValue = scale(data[i][index]);
+		//radiusValue = 10;
 		set.push({
 			"cluster": clusterNumber,
 			"radius": radiusValue,
@@ -449,43 +450,44 @@ function drawUpdate(){
 function visualize(){
 	// Use the pack layout to initialize node positions.
 	d3.layout.pack()
-	.sort(null)
-	.size([width, height])
-	.children(function(d) { return d.values; })
-	.value(function(d) { return d.radius * d.radius; })
-	.nodes({values: d3.nest()
-		.key(function(d) { return d.cluster; })
-		.entries(nodes)});
+		.sort(null)
+		.size([width, height])
+		.children(function(d) { return d.values; })
+		.value(function(d) { return d.radius * d.radius; })
+		.nodes({values: d3.nest()
+			.key(function(d) { return d.cluster; })
+			.entries(nodes)
+		});
 
 	force = d3.layout.force()
-	.nodes(nodes)
-	.size([width, height])
-	.gravity(.02)
-	.charge(0)
-	.on("tick", tick)
-	.start();
+		.nodes(nodes)
+		.size([width, height])
+		.gravity(.02)
+		.charge(0)
+		.on("tick", tick)
+		.start();
 	
 	chart1 = d3.select("#area1").append("svg")
-	.attr("width", width)
-	.attr("height", height);
+		.attr("width", width)
+		.attr("height", height);
 
 	node = chart1.selectAll("circle")
-	.data(nodes)
-	.enter().append("circle")
-	.style("fill", function(d) { return color(d.cluster); })
-	.on("mouseover", mouseOverPointFn)
-	.on("mouseout", mouseOutPointFn)
-	// on click code to trigger bar graph populating
-	.on("click", mouseClickFn)
-	.call(force.drag);
+		.data(nodes)
+		.enter().append("circle")
+		.style("fill", function(d) { return color(d.cluster); })
+		.on("mouseover", mouseOverPointFn)
+		.on("mouseout", mouseOutPointFn)
+		// on click code to trigger bar graph populating
+		.on("click", mouseClickFn)
+		.call(force.drag);
 
 	node.transition()
-	.duration(750)
-	.delay(function(d, i) { return i * 5; })
-	.attrTween("r", function(d) {
-		var i = d3.interpolate(0, d.radius);
-		return function(t) { return d.radius = i(t); };
-	});
+		.duration(750)
+		.delay(function(d, i) { return i * 5; })
+		.attrTween("r", function(d) {
+			var i = d3.interpolate(0, d.radius);
+			return function(t) { return d.radius = i(t); };
+		});
 
 }
 
@@ -495,9 +497,9 @@ function mouseOverPointFn(d,i){
 	d3.select(this)
 		.style("opacity", 0.5);
 	d3.select("#tooltip")
-	.style("visibility", "visible")
-	.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-	.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
+		.style("visibility", "visible")
+		.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+		.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " + d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " + d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
 }
 
 function mouseOutPointFn(d, i){ 
@@ -690,9 +692,9 @@ function drawBars(data){
 function drawBrush(){
 // var data = d3.range(800).map(Math.random);
 
-	var margin = {top: 194, right: 50, bottom: 214, left: 50},
+	var margin = {top: 194, right: 50, bottom: 100, left: 50},
 		width = 960 - margin.left - margin.right,
-		height = 500 - margin.top - margin.bottom;
+		height = 400 - margin.top - margin.bottom;
 
 	var x = d3.scale.linear()
 		.range([0, width / 3])
@@ -757,13 +759,21 @@ function drawBrush(){
 		// console.log(s[0])
 		// console.log(s[1])
 	}
-
+	
 	function brushend() {
 		chartBrush.classed("selecting", !d3.event.target.empty());
 		var s = brush.extent();
-		d3.selectAll("circles");
-		console.log("s[0] is " + s[0])
-		console.log("s[1] is " + s[1])
+		var circles = d3.select("#area1").selectAll("circle")
+			.filter(function() {
+				console.log(d3.select(this));
+				return d3.select(this).attr("r") > s[0];
+			})
+			.filter(function() {
+				console.log(d3.select(this));
+				return d3.select(this).attr("r") < s[1];
+			})
+			.style("opacity", 0.1);
+		console.log(s[0] + " and " + s[1]);
 	}
 }
 
