@@ -690,85 +690,82 @@ function drawBars(data){
 function drawBrush(){
 // var data = d3.range(800).map(Math.random);
 
-var margin = {top: 194, right: 50, bottom: 214, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+	var margin = {top: 194, right: 50, bottom: 214, left: 50},
+		width = 960 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
 
-var x = d3.scale.linear()
-    .range([0, width / 3])
-    .domain([10,45]);
+	var x = d3.scale.linear()
+		.range([0, width / 3])
+		.domain([10,45]);
 
-var y = d3.random.normal(height / 2, height / 8);
+	var y = d3.random.normal(height / 2, height / 8);
 
-var brush = d3.svg.brush()
-    .x(x)
-    .extent([10, 45])   //initial placement of brush
-    .on("brushstart", brushstart)
-    .on("brush", brushmove)
-    .on("brushend", brushend);
+	var brush = d3.svg.brush()
+		.x(x)
+		.extent([10, 45])   //initial placement of brush
+		.on("brushstart", brushstart)
+		.on("brush", brushmove)
+		.on("brushend", brushend);
 
-var arc = d3.svg.arc()
-    .outerRadius(height / 10)    //size of the handles
-    .startAngle(0)
-    .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
+	var arc = d3.svg.arc()
+		.outerRadius(height / 10)    //size of the handles
+		.startAngle(0)
+		.endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
 
-var chartBrush = d3.select("#area4Brush").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	var chartBrush = d3.select("#area4Brush").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-chartBrush.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + (height+10) + ")")
-    .call(d3.svg.axis().scale(x).orient("bottom"));
+	chartBrush.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + (height+10) + ")")
+		.call(d3.svg.axis().scale(x).orient("bottom"));
 
-/*var circle = svg.append("g").selectAll("circle")
-    .data(data)
-  .enter().append("circle")
-    .attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
-    .attr("r", 3.5);*/
+	/*var circle = svg.append("g").selectAll("circle")
+		.data(data)
+	  .enter().append("circle")
+		.attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
+		.attr("r", 3.5);*/
 
-var brushg = chartBrush.append("g")
-    .attr("class", "brush")
-    .call(brush);
+	var brushg = chartBrush.append("g")
+		.attr("class", "brush")
+		.call(brush);
 
-brushg.selectAll(".resize").append("path")
-    .attr("transform", "translate(0," +  height + ")")
-    .attr("d", arc);
+	brushg.selectAll(".resize").append("path")
+		.attr("transform", "translate(0," +  height + ")")
+		.attr("d", arc);
 
-    brushg.selectAll("rect")
-    .attr("height", height/5)
-    .attr("transform", "translate(0," +  (height-10)  + ")");
-
-
-brushstart();
-brushmove();
+	brushg.selectAll("rect")
+		.attr("height", height/5)
+		.attr("transform", "translate(0," +  (height-10)  + ")");
 
 
+	brushstart();
+	brushmove();
 
-function brushstart() {
-  chartBrush.classed("selecting", true);
-}
+	function brushstart() {
+	  chartBrush.classed("selecting", true);
+	}
 
-function brushmove() {
-  var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
+	function brushmove() {
+	  var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
 
-  // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+	  // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
 
-  // console.log(s)
-  // console.log(s[0])
-  // console.log(s[1])
+	  // console.log(s)
+	  // console.log(s[0])
+	  // console.log(s[1])
+	}
 
-}
+	function brushend() {
+	  chartBrush.classed("selecting", !d3.event.target.empty());
+	  var s = brush.extent();
 
-function brushend() {
-  chartBrush.classed("selecting", !d3.event.target.empty());
-  var s = brush.extent();
-
-  console.log("s[0] is " + s[0])
-  console.log("s[1] is " + s[1])
-}
+	  console.log("s[0] is " + s[0])
+	  console.log("s[1] is " + s[1])
+	}
 }
 
 
