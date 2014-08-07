@@ -693,7 +693,7 @@ var brush = d3.svg.brush()
     .on("brushend", brushend);
 
 var arc = d3.svg.arc()
-    .outerRadius(height / 2)    //size of the handles
+    .outerRadius(height / 10)    //size of the handles
     .startAngle(0)
     .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
 
@@ -705,7 +705,7 @@ var chartBrush = d3.select("#area4Brush").append("svg")
 
 chartBrush.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + (height+10) + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
 
 /*var circle = svg.append("g").selectAll("circle")
@@ -719,11 +719,13 @@ var brushg = chartBrush.append("g")
     .call(brush);
 
 brushg.selectAll(".resize").append("path")
-    .attr("transform", "translate(0," +  height / 2 + ")")
+    .attr("transform", "translate(0," +  height + ")")
     .attr("d", arc);
 
-brushg.selectAll("rect")
-    .attr("height", height);
+    brushg.selectAll("rect")
+    .attr("height", height/5)
+    .attr("transform", "translate(0," +  (height-10)  + ")");
+
 
 brushstart();
 brushmove();
