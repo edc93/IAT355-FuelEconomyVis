@@ -652,11 +652,20 @@ function drawBars(data){
 					.style("visibility", "visible");      
 				d3.select(this)
 					.style("opacity", 0.7);
-			}).on("mouseout", function() {
+			})
+			.on("mouseout", function() {
 				detailBox.style("visibility", "hidden");        
 				d3.select(this)
 					.style("opacity", 1.0);
-			});
+			})
+			.on("click", function(d){
+				//console.log(compareDataset[0], d);
+				delete compareDataset[0][d.x_axis];
+				//console.log(compareDataset[0]);
+				d3.select("#area2").selectAll("svg").remove();
+				drawBars(compareDataset);
+			})
+			;
 	};
 
 	var width = width / data.length - 10;
