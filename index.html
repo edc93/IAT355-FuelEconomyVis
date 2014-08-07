@@ -126,8 +126,8 @@
 
 <script>
 
-var width = 1100,
-	height = 1100,
+var width = 600,
+	height = 600,
     padding = 1.5, // separation between same-color nodes
     clusterPadding = 6, // separation between different-color nodes
     maxRadius = 12;
@@ -220,8 +220,8 @@ function getHighest(set, index){
 function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
-	var lowRange = 2;
-	var highRange = 20;
+	var lowRange = 1;
+	var highRange = 10;
 	//Better Scaling for low quantities
 	if (data.length < 50){
 		lowRange = 8;
