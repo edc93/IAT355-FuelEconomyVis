@@ -16,7 +16,7 @@
 		<form action="">
 			<button type='button' onclick='deselectAll()'>Deselect All</button>
 			<button type='button' onclick='selectAll()'>Select All</button><br>
-			<input type="checkbox" id="Acura" checked onclick="testDelete()">Acura
+			<input type="checkbox" id="Acura" checked onclick="drawUpdate()">Acura
 			<input type="checkbox" id="Aston Martin" checked onclick="drawUpdate()">Aston Martin
 			<input type="checkbox" id="Audi" checked onclick="drawUpdate()">Audi
 			<input type="checkbox" id="Bentley" checked onclick="drawUpdate()">Bentley
@@ -557,19 +557,13 @@ function collide(alpha) {
 	};
 }
 
-function testDelete(){
-	d3.select("#area1").remove();
-	console.log("Delete");
-}
-
 //Mouse Click Function
 function mouseClickFn(d,i){	
 	d3.select("#area2").selectAll("svg").remove();
-	compareDataset[0][d.Model] = d.CombinedMPG;
-	compareDataset[1][d.Model] = d.CombinedCO2;
+	compareDataset[0][d.Make + " " + d.Model] = d.CombinedMPG;
+	compareDataset[1][d.Make + " " + d.Model] = d.CombinedCO2;
 	drawBars(compareDataset);
 	console.log(compareDataset[0]);	
-	//console.log("Clicked: " + d + i);
 }
 
 function drawBars(data){			
@@ -634,17 +628,14 @@ function drawBars(data){
 			.attr("x", 0)
 			.style("text-anchor", "left")
 			.text(Y_AXIS_LABEL);
-		//console.log(color(d.cluster));
 		svg.selectAll(".bar")
 			.data(value_data)
 			.enter().append("rect")
 			//Colour
 			.style("fill", function(d) {
-				if (d.x_axis === groups[0]) {
-					return COLOR_1;
-				} else {
-					return COLOR_2;
-				}
+				int color_index = makeNumber(d.x_axis.substr(0,d.x_axis.indexOf(' ')));
+				//console.log(d.x_axis.substr(0,d.x_axis.indexOf(' ')), makeNumber(d.x_axis.substr(0,d.x_axis.indexOf(' '))));
+				return color(color_index);				
 			})
 			.attr("x", function(d) { return x(d.x_axis); })
 			.attr("width", x.rangeBand())
