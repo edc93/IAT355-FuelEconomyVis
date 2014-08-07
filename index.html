@@ -105,6 +105,7 @@
   </form>
 </div>
 
+<div id="areaBrush"></div>
 <div id="area1"></div>
 <div id="area2"></div>
 <div id="area3"></div>
@@ -122,6 +123,32 @@
 		border-radius: 10px;
 		z-index: 10;
 	}
+
+	svg {
+  font: 10px sans-serif;
+}
+
+
+/*handles*/
+.resize path {
+  fill: #666;
+  fill-opacity: .8;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.axis path, .axis line {
+  fill: none;   /*fill of the axis line*/
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/*range*/
+.brush .extent {
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
 </style>
 
 <script>
@@ -147,6 +174,7 @@ var makeList = [];
 var activeMake = [];
 var node;
 var chart1;
+var chartBrush;
 var force;
 
 var model = document.getElementById("modelText").value;
@@ -442,6 +470,8 @@ function visualize(){
 		var i = d3.interpolate(0, d.radius);
 		return function(t) { return d.radius = i(t); };
 	});
+
+	drawBrush();
 }
 
 //Mouse Click Function
@@ -635,6 +665,88 @@ function drawBars(){
 	for (i = 0; i < data.length; i++) {
 	  makeBar(width, width, data[i]);
 	}
+}
+
+
+function drawBrush(){
+// var data = d3.range(800).map(Math.random);
+
+var margin = {top: 194, right: 50, bottom: 214, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var y = d3.random.normal(height / 2, height / 8);
+
+var brush = d3.svg.brush()
+    .x(x)
+    .extent([.3, .5])   //initial placement of brush
+    .on("brushstart", brushstart)
+    .on("brush", brushmove)
+    .on("brushend", brushend);
+
+var arc = d3.svg.arc()
+    .outerRadius(height / 2)    //size of the handles
+    .startAngle(0)
+    .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
+
+var chartBrush = d3.select("#areaBrush").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+chartBrush.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+
+/*var circle = svg.append("g").selectAll("circle")
+    .data(data)
+  .enter().append("circle")
+    .attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
+    .attr("r", 3.5);*/
+
+var brushg = svg.append("g")
+    .attr("class", "brush")
+    .call(brush);
+
+brushg.selectAll(".resize").append("path")
+    .attr("transform", "translate(0," +  height / 2 + ")")
+    .attr("d", arc);
+
+brushg.selectAll("rect")
+    .attr("height", height);
+
+brushstart();
+brushmove();
+
+
+
+function brushstart() {
+  chartBrush.classed("selecting", true);
+}
+
+function brushmove() {
+  var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
+
+  // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+
+  // console.log(s)
+  // console.log(s[0])
+  // console.log(s[1])
+
+}
+
+function brushend() {
+  chartBrush.classed("selecting", !d3.event.target.empty());
+  var s = brush.extent();
+
+  console.log("x1 is" + s[0])
+  console.log("x2 is" +s[1])
+}
 }
 
 
