@@ -8,13 +8,13 @@ svg {
 
 /*circle {
   -webkit-transition: fill-opacity 250ms linear;
-}
+}*/
 
-.selecting circle {
+/*.selecting circle {
   fill-opacity: .2;
-}
+}*/
 
-.selecting circle.selected {
+/*.selecting circle.selected {
   stroke: #f00;
 }*/
 
@@ -78,11 +78,11 @@ svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
 
-// var circle = svg.append("g").selectAll("circle")
-//     .data(data)
-//   .enter().append("circle")
-//     .attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
-//     .attr("r", 3.5);
+/*var circle = svg.append("g").selectAll("circle")
+    .data(data)
+  .enter().append("circle")
+    .attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
+    .attr("r", 3.5);*/
 
 var brushg = svg.append("g")
     .attr("class", "brush")
@@ -104,16 +104,19 @@ function brushstart() {
 
 function brushmove() {
   var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
-  return s[0];
-  console.log(s);
 
   // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+
+  console.log(s)
+  console.log(s[0])
+  console.log(s[1])
+
 }
 
 function brushend() {
   svg.classed("selecting", !d3.event.target.empty());
-  var s = brush.extent();
-  console.log(s);
+  // var s = brush.extent();
+  // console.log(s[1]);
 }
 
 </script>
