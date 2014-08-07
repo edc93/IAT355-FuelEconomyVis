@@ -169,6 +169,16 @@ var color = d3.scale.category20()
 var clusters = new Array(m);
 
 var dataset = [];
+var compareDataset = [	
+		{
+		"chart_title": "Combined MPG",
+		"unit": "Miles per Gallon"
+		},
+		{
+			"chart_title": "Combined CO2 Emission",
+			"unit": "Grams per Kilometer"
+		}
+];
 var nodes = [];
 var makeList = [];
 var activeMake = [];
@@ -473,12 +483,6 @@ function visualize(){
 
 }
 
-//Mouse Click Function
-function mouseClickFn(d,i){
-	drawBars();
-	console.log("Clicked: " + d + i);
-}
-
 //Mouse over function
 function mouseOverPointFn(d,i){
 	//draw tooltip
@@ -547,21 +551,18 @@ function collide(alpha) {
 	};
 }
 
-function drawBars(){
-	data = [{
-		"chart_title": "Population",
-		"unit": "billion",
-		"India": 1.22,
-		"China": 1.36
-		},
-		{
-			"chart_title": "Popluation Grow Rate",
-			"unit": "percentage",
-			"India": 0.0131,
-			"China": 0.0048
-		}];
-			
-	console.log(data);
+//Mouse Click Function
+function mouseClickFn(d,i){	
+	compareDataset[0][d.Model] = d.CombinedMPG;
+	compareDataset[1][d.Model] = d.CombinedCO2;
+	
+	console.log(compareDataset[0]);
+	
+	drawBars(compareDataset);
+	console.log("Clicked: " + d + i);
+}
+
+function drawBars(data){			
 	
 	var WIDTH = 800;
 	var COLOR_1 = "#1f77b4";
@@ -626,6 +627,7 @@ function drawBars(){
 	  svg.selectAll(".bar")
 		  .data(value_data)
 		.enter().append("rect")
+		//Colour
 		  .style("fill", function(d) {
 			if (d.x_axis === groups[0]) {
 			  return COLOR_1;
