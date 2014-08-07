@@ -558,13 +558,12 @@ function testDelete(){
 
 //Mouse Click Function
 function mouseClickFn(d,i){	
+	d3.select("#area2").selectAll("svg").remove();
 	compareDataset[0][d.Model] = d.CombinedMPG;
 	compareDataset[1][d.Model] = d.CombinedCO2;
-	
-	console.log(compareDataset[0]);
-	
 	drawBars(compareDataset);
-	console.log("Clicked: " + d + i);
+	//console.log(compareDataset[0]);	
+	//console.log("Clicked: " + d + i);
 }
 
 function drawBars(data){			
