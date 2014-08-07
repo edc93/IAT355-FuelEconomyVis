@@ -109,8 +109,6 @@
 <div id="area2"></div>
 <div id="area3"></div>
 
-
-
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="Bubbles.js"></script>
 <style type="text/css">
@@ -125,8 +123,6 @@
 		z-index: 10;
 	}
 </style>
-
-<div id="canvas-svg"></div>
 
 <script>
 
@@ -569,7 +565,7 @@ function drawBars(){
 	  });  
 	  x.domain(value_data.map(function(d) { return d.x_axis; }));
 	  y.domain([0, d3.max(value_data, function(d) { return d.y_axis; })]);
-	  var svg = d3.select("#canvas-svg").append("svg")
+	  var svg = d3.select("#area2").append("svg")
 		  .attr("width", width + margin.left + margin.right)
 		  .attr("height", height + margin.top + margin.bottom)
 		.append("g")
