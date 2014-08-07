@@ -492,6 +492,8 @@ function visualize(){
 //Mouse over function
 function mouseOverPointFn(d,i){
 	//draw tooltip
+	d3.select(this)
+		.style("opacity", 0.5);
 	d3.select("#tooltip")
 	.style("visibility", "visible")
 	.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
@@ -499,6 +501,8 @@ function mouseOverPointFn(d,i){
 }
 
 function mouseOutPointFn(d, i){ 
+	d3.select(this)
+		.style("opacity", 1);
 	d3.select("#tooltip").style("visibility", "hidden");
 }
 
@@ -633,7 +637,7 @@ function drawBars(data){
 			.enter().append("rect")
 			//Colour
 			.style("fill", function(d) {
-				int color_index = makeNumber(d.x_axis.substr(0,d.x_axis.indexOf(' ')));
+				var color_index = makeNumber(d.x_axis.substr(0,d.x_axis.indexOf(' ')));
 				//console.log(d.x_axis.substr(0,d.x_axis.indexOf(' ')), makeNumber(d.x_axis.substr(0,d.x_axis.indexOf(' '))));
 				return color(color_index);				
 			})
