@@ -105,6 +105,11 @@
   </form>
 </div>
 
+<div id="area1"></div>
+<div id="area2"></div>
+<div id="area3"></div>
+
+
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="Bubbles.js"></script>
@@ -144,7 +149,7 @@ var nodes = [];
 var makeList = [];
 var activeMake = [];
 var node;
-var svg;
+var chart1;
 var force;
 
 var model = document.getElementById("modelText").value;
@@ -419,11 +424,11 @@ function visualize(){
 	.on("tick", tick)
 	.start();
 	
-	svg = d3.select("body").append("svg")
+	chart1 = d3.select("#area1").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
-	node = svg.selectAll("circle")
+	node = chart1.selectAll("circle")
 	.data(nodes)
 	.enter().append("circle")
 	.style("fill", function(d) { return color(d.cluster); })
