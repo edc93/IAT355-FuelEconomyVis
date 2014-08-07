@@ -16,7 +16,7 @@
 		<form action="">
 			<button type='button' onclick='deselectAll()'>Deselect All</button>
 			<button type='button' onclick='selectAll()'>Select All</button><br>
-			<input type="checkbox" id="Acura" checked onclick="drawUpdate()">Acura
+			<input type="checkbox" id="Acura" checked onclick="testDelete()">Acura
 			<input type="checkbox" id="Aston Martin" checked onclick="drawUpdate()">Aston Martin
 			<input type="checkbox" id="Audi" checked onclick="drawUpdate()">Audi
 			<input type="checkbox" id="Bentley" checked onclick="drawUpdate()">Bentley
@@ -423,7 +423,7 @@ function count(set, index){
 function drawUpdate(){
 	var filteredSet = [];			
 	model = document.getElementById("modelText").value;
-	d3.select("svg").remove();
+	d3.select("#area1").select("svg").remove();
 	nodes = [];
 	//Initialize Data
 	var activeMake = getActive(makeList, "Make");		//First filter cars by make
@@ -549,6 +549,11 @@ function collide(alpha) {
 			return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
 		});
 	};
+}
+
+function testDelete(){
+	d3.select("#area1").remove();
+	console.log("Delete");
 }
 
 //Mouse Click Function
