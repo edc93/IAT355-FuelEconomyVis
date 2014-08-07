@@ -573,8 +573,6 @@ function mouseClickFn(d,i){
 function drawBars(data){			
 	
 	var WIDTH = 1200;
-	var COLOR_1 = "#1f77b4";
-	var COLOR_2 = "#d62728";
 	var Y_DATA_FORMAT = d3.format("");
 	var margin = {top: 70, right: 20, bottom: 30, left: 60},
 		width = WIDTH - margin.left - margin.right,
@@ -649,7 +647,11 @@ function drawBars(data){
 				detailBox.attr("x", x.range()[i] - Y_DATA_FORMAT(d.y_axis).length / 2)
 					.attr("y", y(d.y_axis))
 					.text(Y_DATA_FORMAT(d.y_axis))
-					.style("visibility", "visible");      
+					.style("visibility", "visible");    
+				d3.select("#tooltip")
+					.style("visibility", "visible")
+					.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+					.html(d.x_axis);
 				d3.select(this)
 					.style("opacity", 0.7);
 			})
@@ -657,6 +659,7 @@ function drawBars(data){
 				detailBox.style("visibility", "hidden");        
 				d3.select(this)
 					.style("opacity", 1.0);
+				d3.select("#tooltip").style("visibility", "hidden");
 			})
 			.on("click", function(d){
 				//console.log(compareDataset[0], d);
