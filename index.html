@@ -105,7 +105,7 @@
   </form>
 </div>
 
-<div id="areaBrush"></div>
+<div id="area4Brush"></div>
 <div id="area1"></div>
 <div id="area2"></div>
 <div id="area3"></div>
@@ -174,7 +174,6 @@ var makeList = [];
 var activeMake = [];
 var node;
 var chart1;
-var chartBrush;
 var force;
 
 var model = document.getElementById("modelText").value;
@@ -354,6 +353,7 @@ d3.csv("FuelEconomyDataset.csv",
 		//End Initialization			
 		console.log(nodes) //Debugging
 		visualize()	
+		drawBrush()
 	}
 );
 
@@ -471,7 +471,6 @@ function visualize(){
 		return function(t) { return d.radius = i(t); };
 	});
 
-	drawBrush();
 }
 
 //Mouse Click Function
@@ -692,7 +691,7 @@ var arc = d3.svg.arc()
     .startAngle(0)
     .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
 
-var chartBrush = d3.select("#areaBrush").append("svg")
+var chartBrush = d3.select("#area4Brush").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -709,7 +708,7 @@ chartBrush.append("g")
     .attr("transform", function(d) { return "translate(" + x(d) + "," + y() + ")"; })
     .attr("r", 3.5);*/
 
-var brushg = svg.append("g")
+var brushg = chartBrush.append("g")
     .attr("class", "brush")
     .call(brush);
 
