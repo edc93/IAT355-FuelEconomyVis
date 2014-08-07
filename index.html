@@ -494,8 +494,13 @@ function visualize(){
 //Mouse over function
 function mouseOverPointFn(d,i){
 	//draw tooltip
-	d3.select(this)
-		.style("opacity", 0.5);
+	if (d3.select(this).style("opacity") > 0.4){
+		d3.select(this).style("opacity", 0.7);
+	} 
+	if (d3.select(this).style("opacity") <= 0.4){
+		d3.select(this).style("opacity", 0.5);
+	}
+	
 	d3.select("#tooltip")
 		.style("visibility", "visible")
 		.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
@@ -503,8 +508,13 @@ function mouseOverPointFn(d,i){
 }
 
 function mouseOutPointFn(d, i){ 
-	d3.select(this)
-		.style("opacity", 1);
+	console.log(d3.select(this).style("opacity"));
+	if (d3.select(this).style("opacity") > 0.6){
+		d3.select(this).style("opacity", 1);
+	}
+	if (d3.select(this).style("opacity") <= 0.6){
+		d3.select(this).style("opacity", 0.3);
+	}	
 	d3.select("#tooltip").style("visibility", "hidden");
 }
 
@@ -771,13 +781,13 @@ function drawBrush(){
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") < scale(s[0]);
 			})
-			.style("opacity", 0.1);
+			.style("opacity", 0.3);
 		circles = d3.select("#area1").selectAll("circle")
 			.filter(function() {
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") > scale(s[1]);
 			})
-			.style("opacity", 0.1);
+			.style("opacity", 0.3);
 		circles = d3.select("#area1").selectAll("circle")
 			.filter(function() {
 				//console.log(d3.select(this));
