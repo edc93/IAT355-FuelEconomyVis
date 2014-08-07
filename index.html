@@ -93,7 +93,7 @@
 	</div>
 
     <div>
-  Miles Per Gallon (MPG)
+  Green Value (0 - 100)
 <!-- filter brush code goes here -->
   </div>
 
@@ -263,8 +263,8 @@ function getHighest(set, index){
 function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
-	var lowRange = 1;
-	var highRange = 11;
+	var lowRange = 2;
+	var highRange = 12;
 	//Better Scaling for low quantities
 	if (data.length < 50){
 		lowRange = 8;
@@ -692,19 +692,19 @@ function drawBars(data){
 function drawBrush(){
 // var data = d3.range(800).map(Math.random);
 
-	var margin = {top: 194, right: 50, bottom: 100, left: 50},
-		width = 960 - margin.left - margin.right,
-		height = 400 - margin.top - margin.bottom;
+	var margin = {top: 0, right: 50, bottom: 30, left: 50},
+		width = 1800 - margin.left - margin.right,
+		height = 100 - margin.top - margin.bottom;
 
 	var x = d3.scale.linear()
 		.range([0, width / 3])
-		.domain([10,45]);
+		.domain([0, 100]);
 
 	var y = d3.random.normal(height / 2, height / 8);
 
 	var brush = d3.svg.brush()
 		.x(x)
-		.extent([10, 45])   //initial placement of brush
+		.extent([0, 100])   //initial placement of brush
 		.on("brushstart", brushstart)
 		.on("brush", brushmove)
 		.on("brushend", brushend);
@@ -722,7 +722,7 @@ function drawBrush(){
 
 	chartBrush.append("g")
 		.attr("class", "x axis")
-		.attr("transform", "translate(0," + (height+10) + ")")
+		.attr("transform", "translate(0," + (height+5) + ")")
 		.call(d3.svg.axis().scale(x).orient("bottom"));
 
 	/*var circle = svg.append("g").selectAll("circle")
@@ -763,16 +763,32 @@ function drawBrush(){
 	function brushend() {
 		chartBrush.classed("selecting", !d3.event.target.empty());
 		var s = brush.extent();
+		var scale = d3.scale.linear()
+                    .domain([0, 100])
+                    .range([2, 12]);
 		var circles = d3.select("#area1").selectAll("circle")
 			.filter(function() {
-				console.log(d3.select(this));
-				return d3.select(this).attr("r") > s[0];
-			})
-			.filter(function() {
-				console.log(d3.select(this));
-				return d3.select(this).attr("r") < s[1];
+				//console.log(d3.select(this));
+				return d3.select(this).attr("r") < scale(s[0]);
 			})
 			.style("opacity", 0.1);
+		circles = d3.select("#area1").selectAll("circle")
+			.filter(function() {
+				//console.log(d3.select(this));
+				return d3.select(this).attr("r") > scale(s[1]);
+			})
+			.style("opacity", 0.1);
+		circles = d3.select("#area1").selectAll("circle")
+			.filter(function() {
+				//console.log(d3.select(this));
+				return d3.select(this).attr("r") > scale(s[0]);
+			})
+			.filter(function() {
+				//console.log(d3.select(this));
+				return d3.select(this).attr("r") < scale(s[1]);
+			})
+			.style("opacity", 1);
+		console.log(scale(s[0]) + " and " + scale(s[1]));
 		console.log(s[0] + " and " + s[1]);
 	}
 }
