@@ -740,31 +740,30 @@ function drawBrush(){
 	brushg.selectAll("rect")
 		.attr("height", height/5)
 		.attr("transform", "translate(0," +  (height-10)  + ")");
-
-
+		
 	brushstart();
 	brushmove();
 
 	function brushstart() {
-	  chartBrush.classed("selecting", true);
+		chartBrush.classed("selecting", true);
 	}
 
 	function brushmove() {
-	  var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
+		var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
 
-	  // circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+		// circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
 
-	  // console.log(s)
-	  // console.log(s[0])
-	  // console.log(s[1])
+		// console.log(s)
+		// console.log(s[0])
+		// console.log(s[1])
 	}
 
 	function brushend() {
-	  chartBrush.classed("selecting", !d3.event.target.empty());
-	  var s = brush.extent();
-
-	  console.log("s[0] is " + s[0])
-	  console.log("s[1] is " + s[1])
+		chartBrush.classed("selecting", !d3.event.target.empty());
+		var s = brush.extent();
+		d3.selectAll("circles");
+		console.log("s[0] is " + s[0])
+		console.log("s[1] is " + s[1])
 	}
 }
 
