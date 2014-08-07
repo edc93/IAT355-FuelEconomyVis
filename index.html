@@ -522,12 +522,20 @@ function collide(alpha) {
 }
 
 function drawBars(){
-	data ={
+	data = [{
 		"chart_title": "Population",
 		"unit": "billion",
 		"India": 1.22,
 		"China": 1.36
-		};
+		},
+		{
+			"chart_title": "Popluation Grow Rate",
+			"unit": "percentage",
+			"India": 0.0131,
+			"China": 0.0048
+		}];
+			
+	console.log(data);
 	
 	var WIDTH = 800;
 	var COLOR_1 = "#1f77b4";
@@ -555,7 +563,7 @@ function drawBars(){
 		  .scale(y)
 		  .orient("left")
 		  .tickFormat(Y_DATA_FORMAT);  
-	  var value_data = _.map(groups, function(d) {
+	  var value_data = groups.map(function(d) {
 		return {x_axis: d, y_axis: bar_data[d]};
 	  });  
 	  x.domain(value_data.map(function(d) { return d.x_axis; }));
