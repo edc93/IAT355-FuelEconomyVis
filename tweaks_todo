@@ -1,0 +1,6 @@
+minor tweaks to be made
+
+- same model, different transmission can't be compared, only swaps
+- add cylinders
+- transmission full name instead of abbrev.
+- more breakdown for tooltips (CityMPG, HighwayMPG, CityCO2, etc)
