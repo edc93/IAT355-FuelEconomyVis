@@ -621,6 +621,7 @@ function drawBars(data){
 		var title = svg.append("text")
 			.attr("x", 0)
 			.attr("y", -50)
+			.style("font-size","12px")
 			.attr("class","chart-title")
 			.text(bar_data.chart_title);
 		svg.append("g")
@@ -634,6 +635,7 @@ function drawBars(data){
 			.attr("transform", "rotate(0)")
 			.attr("y", -25)
 			.attr("x", 0)
+			.style("font-size","10px")
 			.style("text-anchor", "left")
 			.text(Y_AXIS_LABEL);
 		svg.selectAll(".bar")
