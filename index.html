@@ -754,21 +754,13 @@ function drawBrush(){
 		.attr("height", height/5)
 		.attr("transform", "translate(0," +  (height-10)  + ")");
 		
-	brushstart();
-	brushmove();
-
 	function brushstart() {
 		chartBrush.classed("selecting", true);
 	}
 
 	function brushmove() {
 		var s = brush.extent();  //returns the value of min and max of the brush range [x1,x2]
-
-		// circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
-
-		// console.log(s)
-		// console.log(s[0])
-		// console.log(s[1])
+		brushend();
 	}
 	
 	function brushend() {
@@ -815,7 +807,7 @@ function drawBrush(){
 			})
 			.style("opacity", 1);
 		
-		console.log(scale(s[0]) + " and " + scale(s[1]));
+		//console.log(scale(s[0]) + " and " + scale(s[1]));
 		console.log(s[0] + " and " + s[1]);
 	}
 }
