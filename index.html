@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <body>
-
-	<div><h3>Green Vehicle Comparison</h3>
+	<div><h2>Green Vehicle Comparison</h2>
 	</div>
 	<div class="filterMake" style="height:800px;width:120px;float:left;">
 		<strong>Make</strong>
 		<form action="">
-			<button type='button' onclick='selectAll()'>Select All</button><br>
-			<button type='button' onclick='deselectAll()'>Deselect All</button><br>
+			<input type="checkbox" class ="selectBox" id="SelectAllMake" checked onclick="selectMake()">Select All<br>
 			<input type="checkbox" class ="makeBox" id="Acura" checked onclick="drawUpdate()">Acura<br>
 			<input type="checkbox" class="makeBox" id="Aston Martin" checked onclick="drawUpdate()">Aston Martin<br>
 			<input type="checkbox" class="makeBox" id="Audi" checked onclick="drawUpdate()">Audi<br>
@@ -50,20 +48,19 @@
 		<br>
 	</div>
 	<div class="filterTransmission" style="float:left" >
-		<strong>Transmission</strong>
-		<button type='button' onclick='deselectAllTrans()'>Deselect All</button>
-		<button type='button' onclick='selectAllTrans()'>Select All</button><br>
+		<strong>Transmission</strong>		
 		<form action="">
+			<input type="checkbox" class ="selectBox" id="SelectAllTransmission" checked onclick="selectTransmission()">Select All
 			<input type="checkbox" class="transBox" id="A" checked onclick="drawUpdate()">Automatic
 			<input type="checkbox" class="transBox" id="M" checked onclick="drawUpdate()">Manual
 			<input type="checkbox" class="transBox" id="AM" checked onclick="drawUpdate()">Automated Manual
-			<input type="checkbox" class="transBox" id="AMS" checked onclick="drawUpdate()">Automated Manual- Selectable (paddles)
-			<input type="checkbox" class="transBox" id="CVT" checked onclick="drawUpdate()">Continuosly Variable
+			<input type="checkbox" class="transBox" id="AMS" checked onclick="drawUpdate()">Automated Manual - Selectable
+			<input type="checkbox" class="transBox" id="CVT" checked onclick="drawUpdate()">Continuously Variable
 			<input type="checkbox" class="transBox" id="SA" checked onclick="drawUpdate()">Semi-Automatic
-			<input type="checkbox" class="transBox" id="SCV" checked onclick="drawUpdate()">Selectable Continously Variable (CVT with paddles)
+			<input type="checkbox" class="transBox" id="SCV" checked onclick="drawUpdate()">Selectable Continuously Variable
 		</form>
 	</div>
-	<div class="displayType" style="position:absolute;height:100px;width:650px;margin-top:55px;margin-left:120px;">
+	<div class="displayType" style="position:absolute;height:100px;width:650px;margin-top:50px;margin-left:120px;">
 		<form action="">
 			<Strong>Display Type</Strong>
 			<input type="radio" id="GV" name="displayType" value="GV" onclick="drawUpdate()" checked>Green Value
@@ -72,7 +69,7 @@
 		</form>
 	</div>
     <div id="area4Brush" style="position:absolute;height:100px;width:650px;margin-top:85px;margin-left:120px;">
-		<Strong>Green Value (0 - 100)</Strong>
+		<Strong>Green Value Percentage</Strong>
 	</div>
 	<div id="area1" style="position:absolute;height:600px;width:600px;margin-top:170px;margin-left:150px;"></div>
 	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;"></div>
@@ -349,27 +346,24 @@ d3.csv("FuelEconomyDataset.csv",
 	}
 );
 
-//Selects all inputs under Make 
-function deselectAll(){
-	d3.selectAll('.makeBox').property('checked', false);
+//Selects/Deselects all inputs under Make 
+function selectMake(){
+	//console.log(document.getElementById("SelectAllMake").checked);
+	if (document.getElementById("SelectAllMake").checked == true){
+		d3.selectAll('.makeBox').property('checked', true);
+	} else{
+		d3.selectAll('.makeBox').property('checked', false);
+	}
 	drawUpdate();
 }
 
-//Deselect all inputs under Make
-function selectAll(){
-	d3.selectAll('.makeBox').property('checked', true);
-	drawUpdate();
-}
-
-//Selects all inputs under Transmission
-function deselectAllTrans(){
-	d3.selectAll('.transBox').property('checked', false);
-	drawUpdate();
-}
-
-//Deselect all inputs under Transmission
-function selectAllTrans(){
-	d3.selectAll('.transBox').property('checked', true);
+//Selects/Deselects all inputs under Transmission
+function selectTransmission(){
+	if (document.getElementById("SelectAllTransmission").checked == true){
+		d3.selectAll('.transBox').property('checked', true);
+	} else{
+		d3.selectAll('.transBox').property('checked', false);
+	}
 	drawUpdate();
 }
 
@@ -473,7 +467,7 @@ function visualize(){
 		.on("mouseout", mouseOutPointFn)
 		// on click code to trigger bar graph populating
 		.on("click", mouseClickFn)
-		//.call(force.drag);
+		//.call(force.drag); //Drag function
 
 	node.transition()
 		.duration(750)
@@ -675,8 +669,7 @@ function drawBars(data){
 				//console.log(compareDataset[0]);
 				d3.select("#area2").selectAll("svg").remove();
 				drawBars(compareDataset);
-			})
-			;
+			});
 	};
 
 	var width = width / data.length - 10;
