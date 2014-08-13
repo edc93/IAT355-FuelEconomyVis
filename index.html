@@ -486,8 +486,8 @@ function mouseOverPointFn(d,i){
 			.style("visibility", "visible")
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
 			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " +
-			d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " +
-			d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2 + "<br/>Green Value: " +
+			d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: <strong>" +
+			d.CombinedMPG + "</strong><br/>CityMPG:" + d.CityMPG + "<br/>HighwayMPG:" + d.HighwayMPG +"<br/>CombinedCO2: <strong>" + d.CombinedCO2 + "</strong><br/>CityCO2:" + d.CityCO2 + "<br/>HighwayCO2:" + d.HighwayCO2 +"<br/>Green Value: <strong>" + 
 			d3.round(d.GreenIndex));
 	} 
 	if (d3.select(this).style("opacity") <= 0.4){
