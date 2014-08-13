@@ -69,16 +69,17 @@
 			<input type="checkbox" class="transBox" id="SCV" checked onclick="drawUpdate()">Selectable Continously Variable (CVT with paddles)
 		</form>
 	</div>
-    <div id="area4Brush" style="height:100px;width:650px;float:left;">
+	<div class="displayType" style="position:absolute;height:100px;width:650px;margin-top:55px;margin-left:120px;">
+		<form action="">
+			<Strong>Display Type</Strong>
+			<input type="radio" id="GV" name="displayType" value="GV" onclick="drawUpdate()" checked>Green Value
+			<input type="radio" id="MPG" name="displayType" value="MPG" onclick="drawUpdate()">MPG
+			<input type="radio" id="CO2" name="displayType" value="CO2" onclick="drawUpdate()">CO2
+		</form>
+	</div>
+    <div id="area4Brush" style="position:absolute;height:100px;width:650px;margin-top:85px;margin-left:120px;">
 		<Strong>Green Value (0 - 100)</Strong>
 	</div>
-<!--   <div id="searchButton">
-   <form>
-    <br>
-    <input type="button" value="Search" onclick="drawUpdate()">
-  </form>
-</div> -->
-
 	<div id="area1" style="position:absolute;height:600px;width:600px;margin-top:170px;margin-left:150px;"></div>
 	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;></div>
 	<div id="area3"></div>
@@ -129,7 +130,7 @@ var width = 600,
     clusterPadding = 6, // separation between different-color nodes
     maxRadius = 12;
 
-var n = 503, // total number of nodes
+var n = 730, // total number of nodes
     m = 36; // number of distinct clusters
 	
 var color = d3.scale.ordinal()
@@ -233,18 +234,27 @@ function getHighest(set, index){
 function mapCar2Nodes(set, data, index){
 	var clusterNumber;
 	var radiusValue;
-	var lowRange = 2;
-	var highRange = 12;
-	//Better Scaling for low quantities
-	if (data.length < 50){
-		lowRange = 8;
-		highRange = 30;
-	}
+	var lowRangeScale = d3.scale.pow()
+					.exponent(.1)
+                    .domain([0, 729])
+                    .range([10, 2]);
+	var highRangeScale = d3.scale.pow()
+					.exponent(.1)
+                    .domain([0, 729])
+                    .range([40, 12]);
+	var lowRange = lowRangeScale(data.length);
+	var highRange = highRangeScale(data.length);
+	console.log(lowRange, highRange);
 	//Get highest element of type 'index' from dataset
 	var low = getLowest(data, index);
 	//Get lowest element of type 'index' from dataset
 	var high = getHighest(data, index);
 	//Scales the highest and lowest to range [3, 20]
+	if (index == "CombinedCO2"){ //Rank CO2 Emission with lowest as highest
+		var a = lowRange, b = highRange;
+		lowRange = b;
+		highRange = a;
+	}
 	var scale = d3.scale.linear()
                     .domain([low, high])
                     .range([lowRange, highRange]);
@@ -420,11 +430,18 @@ function drawUpdate(){
 	var transmissionList = count(dataset, "Transmission");
 	var activeTransmission = getActive(transmissionList, "Transmission");	//Second filter cars by transmission	
 	filteredSet = filter(filteredSet, activeTransmission, "Transmission");				//Second filter cars by transmission
-	if (filteredSet.length > 0){
-		mapCar2Nodes(nodes, filteredSet, "CombinedMPG"); //Puts each object in dataset into a node under 'nodes'
+	if (filteredSet.length > 0){  //Puts each object in dataset into a node under 'nodes'
+		//console.log(document.getElementById("MPG").checked);
+		if (document.getElementById("GV").checked == true){
+			mapCar2Nodes(nodes, filteredSet, "GreenIndex");
+		} else if (document.getElementById("MPG").checked == true){
+			mapCar2Nodes(nodes, filteredSet, "CombinedMPG");
+		} else if (document.getElementById("CO2").checked == true){
+			mapCar2Nodes(nodes, filteredSet, "CombinedCO2");
+		}
+		//mapCar2Nodes(nodes, filteredSet, "GreenIndex");
 	}	
 	//End Initialization
-	//console.log(transmissionList);	
 	visualize();
 }
 
@@ -483,7 +500,8 @@ function mouseOverPointFn(d,i){
 			.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
 			.html("Make: " + d.Make + "<br/>Model: " + d.Model + "<br/>Transmission: " +
 			d.Transmission + "<br/>Cylinder: " + d.Cylinder + "<br/>CombinedMPG: " +
-			d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2);
+			d.CombinedMPG + "<br/>CombinedCO2: " + d.CombinedCO2 + "<br/>Green Value: " +
+			d3.round(d.GreenIndex));
 	} 
 	if (d3.select(this).style("opacity") <= 0.4){
 		d3.select(this).style("opacity", 0.1);
@@ -567,7 +585,7 @@ function mouseClickFn(d,i){
 
 function drawBars(data){			
 	
-	var WIDTH = 1200;
+	var WIDTH = 1800;
 	var Y_DATA_FORMAT = d3.format("");
 	var margin = {top: 60, right: 20, bottom: 30, left: 60},
 		width = WIDTH - margin.left - margin.right,
@@ -687,7 +705,7 @@ function drawBrush(){
 
 	var margin = {top: 0, right: 50, bottom: 30, left: 50},
 		width = 1800 - margin.left - margin.right,
-		height = 100 - margin.top - margin.bottom;
+		height = 50 - margin.top - margin.bottom;
 
 	var x = d3.scale.linear()
 		.range([0, width / 3])
@@ -702,8 +720,8 @@ function drawBrush(){
 		.on("brush", brushmove)
 		.on("brushend", brushend);
 
-	var arc = d3.svg.arc()
-		.outerRadius(height / 10)    //size of the handles
+	var arc = d3.svg.arc() //Slider Ends
+		.outerRadius(height / 2)    //size of the handles
 		.startAngle(0)
 		.endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
 
@@ -715,7 +733,7 @@ function drawBrush(){
 
 	chartBrush.append("g")
 		.attr("class", "x axis")
-		.attr("transform", "translate(0," + (height+5) + ")")
+		.attr("transform", "translate(0," + (height+5) + ")") //Axis
 		.call(d3.svg.axis().scale(x).orient("bottom"));
 
 	/*var circle = svg.append("g").selectAll("circle")
@@ -756,31 +774,47 @@ function drawBrush(){
 	function brushend() {
 		chartBrush.classed("selecting", !d3.event.target.empty());
 		var s = brush.extent();
+		var lowRangeScale = d3.scale.pow()
+							.exponent(.1)
+							.domain([0, 729])
+							.range([10, 2]);
+		var highRangeScale = d3.scale.pow()
+							.exponent(.1)
+							.domain([0, 729])
+							.range([40, 12]);
+		var lowRange = lowRangeScale(nodes.length);
+		var highRange = highRangeScale(nodes.length);
 		var scale = d3.scale.linear()
-                    .domain([0, 100])
-                    .range([2, 12]);
-		var circles = d3.select("#area1").selectAll("circle")
+					.domain([0.01, 99.99])
+					.range([lowRange, highRange]);
+		
+		//console.log(nodes.length);
+		
+		var circles = d3.select("#area1").selectAll("circle") //Less than Smallest
 			.filter(function() {
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") < scale(s[0]);
 			})
 			.style("opacity", 0.1);
-		circles = d3.select("#area1").selectAll("circle")
+		
+		circles = d3.select("#area1").selectAll("circle")	//Greater than Largest
 			.filter(function() {
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") > scale(s[1]);
 			})
 			.style("opacity", 0.1);
-		circles = d3.select("#area1").selectAll("circle")
+		
+		circles = d3.select("#area1").selectAll("circle")	//Greater than Smallest
 			.filter(function() {
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") > scale(s[0]);
 			})
-			.filter(function() {
+			.filter(function() {							//Less than Largest
 				//console.log(d3.select(this));
 				return d3.select(this).attr("r") < scale(s[1]);
 			})
 			.style("opacity", 1);
+		
 		console.log(scale(s[0]) + " and " + scale(s[1]));
 		console.log(s[0] + " and " + s[1]);
 	}
