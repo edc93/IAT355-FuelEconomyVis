@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <body>
-	<div id="tooltip">
-	</div>
-	<div><h3>Make & Model Search</h3>
-		<!-- <form action="demo_form.asp"> -->
 
-		 
-		<!-- <input class="searchField" type="text" id="modelText" placeholder="Model" name="modelText" value=""><br><br> -->
-		<!-- </form> -->
+	<div><h3>Green Vehicle Comparison</h3>
 	</div>
 	<div class="filterMake" style="height:800px;width:120px;float:left;">
 		<strong>Make</strong>
@@ -81,8 +75,9 @@
 		<Strong>Green Value (0 - 100)</Strong>
 	</div>
 	<div id="area1" style="position:absolute;height:600px;width:600px;margin-top:170px;margin-left:150px;"></div>
-	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;></div>
+	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;"></div>
 	<div id="area3"></div>
+	<div id="tooltip"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <style type="text/css">
 
@@ -478,11 +473,11 @@ function visualize(){
 		.on("mouseout", mouseOutPointFn)
 		// on click code to trigger bar graph populating
 		.on("click", mouseClickFn)
-		.call(force.drag);
+		//.call(force.drag);
 
 	node.transition()
 		.duration(750)
-		.delay(function(d, i) { return i * 5; })
+		.delay(function(d, i) { return i * 4; })
 		.attrTween("r", function(d) {
 			var i = d3.interpolate(0, d.radius);
 			return function(t) { return d.radius = i(t); };
