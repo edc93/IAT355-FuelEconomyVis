@@ -3,15 +3,14 @@
 <body>
 	<div id="tooltip">
 	</div>
-	<div>
+	<div><h3>Make & Model Search</h3>
 		<!-- <form action="demo_form.asp"> -->
 
-		<h3>Make & Model Search</h3> 
+		 
 		<!-- <input class="searchField" type="text" id="modelText" placeholder="Model" name="modelText" value=""><br><br> -->
 		<!-- </form> -->
 	</div>
-
-	<div class="filterMake" style="height:200px;width:100px;float:left;">
+	<div class="filterMake" style="height:800px;width:120px;float:left;">
 		<strong>Make</strong>
 		<form action="">
 			<button type='button' onclick='selectAll()'>Select All</button><br>
@@ -56,8 +55,7 @@
 		</form>
 		<br>
 	</div>
-
-	<div class="filterTransmission" >
+	<div class="filterTransmission" style="float:left" >
 		<strong>Transmission</strong>
 		<button type='button' onclick='deselectAllTrans()'>Deselect All</button>
 		<button type='button' onclick='selectAllTrans()'>Select All</button><br>
@@ -71,23 +69,9 @@
 			<input type="checkbox" class="transBox" id="SCV" checked onclick="drawUpdate()">Selectable Continously Variable (CVT with paddles)
 		</form>
 	</div>
-
-
-<!--
-	<div class="filterCylinder" >
-		<Strong>Cylinder</strong>
-		<form action="">
-			<input type="checkbox" id="3Cyl" checked onclick="drawUpdate()">3
-			<input type="checkbox" id="16Cyl" checked onclick="drawUpdate()">16
-		</form>
-	</div>
--->
-	</br>
-    <div id="area4Brush" style="height:200px;width:300px;float:left;">
+    <div id="area4Brush" style="height:100px;width:650px;float:left;">
 		<Strong>Green Value (0 - 100)</Strong>
 	</div>
-
-
 <!--   <div id="searchButton">
    <form>
     <br>
@@ -95,10 +79,9 @@
   </form>
 </div> -->
 
-	<div id="area1" style="height:200px;width:300px;float:top;"></div>
-	<div id="area2" style="height:20000px;width:30000px;float:left;"></div>
+	<div id="area1" style="position:absolute;height:600px;width:600px;margin-top:170px;margin-left:150px;"></div>
+	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;></div>
 	<div id="area3"></div>
-
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <style type="text/css">
 
@@ -138,7 +121,6 @@ svg {
 }
 
 </style>
-
 <script>
 
 var width = 600,
@@ -461,14 +443,14 @@ function visualize(){
 
 	force = d3.layout.force()
 		.nodes(nodes)
-		.size([width + 500, height])
+		.size([width, height])
 		.gravity(.02)
 		.charge(0)
 		.on("tick", tick)
 		.start();
 	
 	chart1 = d3.select("#area1").append("svg")
-		.attr("width", width + 500)
+		.attr("width", width)
 		.attr("height", height);
 
 	node = chart1.selectAll("circle")
@@ -587,7 +569,7 @@ function drawBars(data){
 	
 	var WIDTH = 1200;
 	var Y_DATA_FORMAT = d3.format("");
-	var margin = {top: 700, right: 20, bottom: 30, left: 60},
+	var margin = {top: 60, right: 20, bottom: 30, left: 60},
 		width = WIDTH - margin.left - margin.right,
 		height = WIDTH - margin.top - margin.bottom;
 	var groups = [];
@@ -695,7 +677,7 @@ function drawBars(data){
 	}
 
 	for (i = 0; i < data.length; i++) {
-	  makeBar(width, width, data[i]);
+	  makeBar(width, 200, data[i]);
 	}
 }
 
