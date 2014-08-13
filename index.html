@@ -72,6 +72,7 @@
 		<Strong>Green Value Percentage</Strong>
 	</div>
 	<div id="area1" style="position:absolute;height:600px;width:600px;margin-top:170px;margin-left:150px;"></div>
+
 	<div id="area2" style="position:absolute;height:400px;width:400px;margin-top:170px;margin-left:750px;"></div>
 	<div id="tooltip"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -232,7 +233,7 @@ function mapCar2Nodes(set, data, index){
                     .range([40, 12]);
 	var lowRange = lowRangeScale(data.length);
 	var highRange = highRangeScale(data.length);
-	console.log(lowRange, highRange);
+	//console.log(lowRange, highRange);
 	//Get highest element of type 'index' from dataset
 	var low = getLowest(data, index);
 	//Get lowest element of type 'index' from dataset
@@ -331,7 +332,7 @@ d3.csv("FuelEconomyDataset.csv",
 	},
 	function(error, data){
 		//Initialize Data
-		dataset = calculateGreen(data)		//Complete dataset
+		dataset = calculateGreen(data)		//Calculate the attribute of GreenIndex and add all attributes into dataset
 		n = dataset.length	//Total number of cars in the dataset
 		makeList = countMake(dataset, "Make"); //Returns a set of all makes
 		m = makeList.length	//Set number of makes as well as clusters
@@ -468,7 +469,7 @@ function visualize(){
 
 	node.transition()
 		.duration(750)
-		.delay(function(d, i) { return i * 4; })
+		.delay(function(d, i) { return i * 5; })
 		.attrTween("r", function(d) {
 			var i = d3.interpolate(0, d.radius);
 			return function(t) { return d.radius = i(t); };
@@ -563,12 +564,13 @@ function collide(alpha) {
 //Mouse Click Function
 function mouseClickFn(d,i){	
 	d3.select("#area2").selectAll("svg").remove();
-	compareDataset[0][d.Make + " " + d.Model] = d.CombinedMPG;
-	compareDataset[1][d.Make + " " + d.Model] = d.CombinedCO2;
+	compareDataset[0][d.Make + " " + d.Model] = d.CombinedMPG;	//First bar chart
+	compareDataset[1][d.Make + " " + d.Model] = d.CombinedCO2;	//Second bar chart
 	drawBars(compareDataset);
 	console.log(compareDataset[0]);	
 }
 
+//Draws Bar Chart
 function drawBars(data){			
 	
 	var WIDTH = 1800;
@@ -684,7 +686,7 @@ function drawBars(data){
 	}
 }
 
-
+//Draws sliders
 function drawBrush(){
 // var data = d3.range(800).map(Math.random);
 
